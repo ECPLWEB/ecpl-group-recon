@@ -1,8 +1,8 @@
 import { defineConfig } from "vite";
 
-// Use relative asset paths so GitHub Pages and file:// previews work without rewrites.
+// GitHub Project Pages: https://<user>.github.io/ecpl-group-recon/
 export default defineConfig({
-  base: "./",
+  base: "/ecpl-group-recon/",
   server: {
     port: 5173,
   },

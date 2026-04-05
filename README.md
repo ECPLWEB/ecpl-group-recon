@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Open the URL Vite prints (usually `http://localhost:5173`). Click **Load preview** on a dataset to fetch a sample file.
+Open **`http://localhost:5173/ecpl-group-recon/`** (trailing slash matters). Click **Load preview** on a dataset to fetch a sample file.
 
 ```bash
 npm run build
@@ -26,7 +26,12 @@ Output is in `dist/` — deploy that folder to GitHub Pages, Netlify, or any sta
 | `public/data/samples/` | Built-in examples. |
 | `public/data/snapshots/` | Your real CSV/JSON exports (add manifest entries). |
 
-**GitHub Pages:** if the site is not at the domain root, set `base` in `vite.config.ts` to your repo path (e.g. `/ecpl-group-recon/`) before `npm run build`.
+**GitHub Pages:** `vite.config.ts` uses `base: '/ecpl-group-recon/'` for Project Pages at `https://<your-username>.github.io/ecpl-group-recon/`.
+
+1. Repo **Settings → Pages → Build and deployment**: source **GitHub Actions**.
+2. Push to `main` or `master`; workflow **Deploy to GitHub Pages** builds and publishes `dist/`.
+
+For local dev, assets still load correctly; Vite serves with the same `base`.
 
 ## Rules (project context)
 
