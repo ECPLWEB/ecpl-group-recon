@@ -10,7 +10,7 @@ Thumbs.db
 .env
 .env.*
 
-# Build
+# Build (regenerate with npm run build)
 dist/
 build/
 .next/

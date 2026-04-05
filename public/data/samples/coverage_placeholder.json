@@ -1,0 +1,30 @@
+{
+  "period": "2024-09-15 to 2026-03-31",
+  "rows": [
+    {
+      "topic": "ECPL printed sales",
+      "status": "ready",
+      "note": "Copy ecpl_invoices_consolidated_master_tagged.csv into public/data/snapshots/ and add a manifest entry."
+    },
+    {
+      "topic": "ECPL Axis bank FY 25-26",
+      "status": "ready",
+      "note": "ECPL_Axis_*_from_PDF.csv"
+    },
+    {
+      "topic": "Space Within HDFC",
+      "status": "ready",
+      "note": "Rent to Harshad, advance tax, OD interest — tag in SW statement then export snapshot."
+    },
+    {
+      "topic": "ECPL purchases Jan–Mar",
+      "status": "missing",
+      "note": "Awaiting bills."
+    },
+    {
+      "topic": "ECPL operating expenses",
+      "status": "missing",
+      "note": "Awaiting salary + expense ledger or CA P&L."
+    }
+  ]
+}

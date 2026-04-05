@@ -1,0 +1,4 @@
+entity,stream,example_amount_inr,source
+ECPL,printed_sales,50747854.99,ecpl_invoices_consolidated_master_tagged.csv
+ECPL,tally_purchase_gross,25667156.89,ECPL_Tally_Purchase_master_tagged.csv
+STPL,to_ECPL_axis_credits,8575200,ECPL Axis narration filter

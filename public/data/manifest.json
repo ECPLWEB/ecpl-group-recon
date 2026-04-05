@@ -1,0 +1,22 @@
+{
+  "updated": "2026-04-05",
+  "coverage_note": "Salaries, full ECPL expenses, and Jan–Mar purchase bills are not loaded yet. Printed ECPL sales are the sales source of truth when they differ from Tally.",
+  "datasets": [
+    {
+      "id": "coverage-placeholder",
+      "title": "Coverage checklist (sample)",
+      "description": "Example JSON shape for high-level status rows. Replace or extend when you publish real summaries.",
+      "path": "samples/coverage_placeholder.json",
+      "format": "json",
+      "source_note": "Edit in repo; not generated from Excel"
+    },
+    {
+      "id": "csv-demo",
+      "title": "CSV preview demo",
+      "description": "Simple comma-separated file to verify the table preview. Complex CSVs with quoted commas should be exported as JSON for reliable display.",
+      "path": "samples/demo_grid.csv",
+      "format": "csv",
+      "source_note": "Demo only"
+    }
+  ]
+}
