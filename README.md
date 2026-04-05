@@ -2,21 +2,23 @@
 
 Static data + a small **Vite** front-end for cross-party reconciliation (Space Within, ECPL, STPL, Nakul). Everything under `public/data/` is fetched at runtime — no API.
 
-## Quick start
+## Run and build locally (simplest path)
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open **`http://localhost:5173/ecpl-group-recon/`** (trailing slash matters). Click **Load preview** on a dataset to fetch a sample file.
+Open **http://localhost:5173/** — click **Load preview** on a dataset.
+
+Production build + local preview (serves the `dist/` folder):
 
 ```bash
 npm run build
 npm run preview
 ```
 
-Output is in `dist/` — deploy that folder to GitHub Pages, Netlify, or any static host.
+Then open the URL Vite prints (usually **http://localhost:4173/**).
 
 ## Data layout
 
@@ -26,12 +28,24 @@ Output is in `dist/` — deploy that folder to GitHub Pages, Netlify, or any sta
 | `public/data/samples/` | Built-in examples. |
 | `public/data/snapshots/` | Your real CSV/JSON exports (add manifest entries). |
 
-**GitHub Pages:** `vite.config.ts` uses `base: '/ecpl-group-recon/'` for Project Pages at `https://<your-username>.github.io/ecpl-group-recon/`.
+## Git branch
+
+Use **`main`** as the default branch. Older clones may still have `master`; rename locally with:
+
+```bash
+git branch -m master main
+git fetch origin
+git branch -u origin/main main
+```
+
+## GitHub Pages (optional)
+
+`vite.config.ts` uses base `/ecpl-group-recon/` **only when** `GITHUB_ACTIONS=true` (the deploy workflow). Local builds keep `base: "./"`.
 
 1. Repo **Settings → Pages → Build and deployment**: source **GitHub Actions**.
-2. Push to `main` or `master`; workflow **Deploy to GitHub Pages** builds and publishes `dist/`.
+2. Push to **`main`**; workflow **Deploy to GitHub Pages** builds and publishes `dist/`.
 
-For local dev, assets still load correctly; Vite serves with the same `base`.
+Site URL: `https://ecplweb.github.io/ecpl-group-recon/` (org Project Pages).
 
 ## Rules (project context)
 
