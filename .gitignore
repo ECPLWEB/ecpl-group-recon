@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
+
+# Env / secrets
+.env
+.env.*
+
+# Build
+dist/
+build/
+.next/
+
+# Large local dumps (keep out of git; use samples in data/)
+*.pdf
+*.xlsx
+*.xls
