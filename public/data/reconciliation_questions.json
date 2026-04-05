@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-05",
+  "updated": "2026-04-06",
   "disclaimer": "ECPL operating expenses for 1 Apr 2025 – 28 Feb 2026 are taken from the CA P&L workbook (cleaned JSON in this app). That is the main expense total unless superseded by a statutory filing. Other parties (Space Within, STPL) use their own bank/GST files. Click “Show reconciled data” under each question to open the linked snapshot.",
   "questions": [
     {
@@ -84,19 +84,27 @@
     {
       "id": "harshad_tax",
       "title": "What advance / income tax was paid for Harshad Mehta?",
-      "status": "blocked",
-      "summary": "Formula: 30% × Space Within profit. Payments are expected on Space Within HDFC — not in ECPL P&L. No SW bank snapshot is loaded in this app yet.",
+      "status": "answered_partial",
+      "summary": "Formula: 30% × Space Within profit. SW formal P&L (Oct'24–Mar'25 sheet) net profit ₹8,13,027 → proxy tax ₹2,43,908 — restate if your anchor is 15-Sep-2024 or if Revised PL replaces this profit. Actual payments must still be traced on Space Within HDFC (challan / narration).",
       "figures": [
         {
-          "label": "SW tax payments (tagged)",
+          "label": "30% × SW net profit (proxy, Oct'24–Mar'25 sheet)",
+          "value": "₹ 2,43,908",
+          "note": "See reconciliation_gaps.json → harshad_income_tax_proxy"
+        },
+        {
+          "label": "SW HDFC tax payments (tagged)",
           "value": "—",
-          "note": "Add snapshots/sw_hdfc_*.json when ready."
+          "note": "Not loaded in app — export required."
         }
       ],
-      "data_sources": ["sw_hdfc"],
-      "gaps": ["Export Space Within bank with ITNS/OLTAS tags", "SW profit from books"],
-      "advice": "Add a manifest entry + JSON when you have a cleaned extract.",
-      "evidence": []
+      "data_sources": ["sw_pl_main_oct_mar25", "sw_hdfc"],
+      "gaps": ["SW bank with ITNS/OLTAS tags", "Adjusted profit for 15-Sep start if different"],
+      "advice": "Use Gaps & bank tab for full checklist; never pay from proxy without challan match.",
+      "evidence": [
+        { "dataset_id": "reconciliation_gaps_checklist", "label": "Gaps + 30% proxy + caveats" },
+        { "dataset_id": "sw_pl_main_oct_mar25", "label": "SW P&L (profit line)" }
+      ]
     },
     {
       "id": "sw_od_interest",
@@ -153,7 +161,10 @@
       "data_sources": [],
       "gaps": [],
       "advice": "Track coverage in the checklist sample until each stream has a manifest dataset.",
-      "evidence": [{ "dataset_id": "coverage-placeholder", "label": "Coverage checklist sample" }]
+      "evidence": [
+        { "dataset_id": "reconciliation_gaps_checklist", "label": "Full missing-data & bank plan" },
+        { "dataset_id": "coverage-placeholder", "label": "Coverage checklist sample" }
+      ]
     }
   ],
   "suggestions_next_steps": [

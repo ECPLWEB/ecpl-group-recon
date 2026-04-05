@@ -19,6 +19,18 @@ python scripts/export_ecpl_pl_workbook.py "C:\path\to\PL_Apr to Feb_26_ECPL.xlsx
 
 Outputs under **`public/data/snapshots/ecpl_fy2526/`**. The script can also refresh **printed-invoice cross-check** if the tagged CSV path in the script exists.
 
+### Space Within P&L → JSON (FY 24-25 workbook)
+
+```bash
+python scripts/export_sw_pl_workbook.py "C:\path\to\Space within_P&L Account_Oct to March 25_260108.xlsx"
+```
+
+Outputs under **`public/data/snapshots/sw_fy2425/`**.
+
+### Gaps & bank checklist
+
+Editable **`public/data/reconciliation_gaps.json`** drives the **Gaps & bank** tab (six expense lines, missing files, unreconciled-bank workplan). It is also a manifest dataset for evidence buttons.
+
 Edit **`public/data/registry.json`** and **`public/data/reconciliation_questions.json`** (`evidence[]` links questions to **`manifest.json`** `id` values).
 
 Production build + local preview (serves the `dist/` folder):

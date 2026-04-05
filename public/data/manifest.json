@@ -1,6 +1,6 @@
 {
-  "updated": "2026-04-05",
-  "coverage_note": "ECPL P&L workbook (1 Apr 25 – 28 Feb 26) is the main operating expense authority. Cleaned JSON lives under snapshots/. Regenerate ECPL Excel exports with: python scripts/export_ecpl_pl_workbook.py <path-to-xlsx>",
+  "updated": "2026-04-06",
+  "coverage_note": "ECPL P&L (1 Apr 25 – 28 Feb 26) = main ECPL expense authority. Space Within = FY 24-25 workbook (Oct'24–Mar'25 sheet); recon anchor 15-Sep-2024; SW expenses in books through 30-Jun-2025 only. See reconciliation_gaps.json for six expense lines vs bank + missing data.",
   "datasets": [
     {
       "id": "ecpl_pl_main",
@@ -82,6 +82,41 @@
       "format": "json",
       "view": "bank_lines",
       "source_note": "Manual snapshot"
+    },
+    {
+      "id": "reconciliation_gaps_checklist",
+      "title": "Gaps & bank tie-up — six expense lines + missing data",
+      "description": "What we have vs missing; SW/ECPL rent conflict; 30% Harshad tax proxy; unreconciled bank workplan.",
+      "path": "reconciliation_gaps.json",
+      "format": "json",
+      "view": "gap_report",
+      "source_note": "Edit in repo as facts change"
+    },
+    {
+      "id": "sw_pl_main_oct_mar25",
+      "title": "Space Within — P&L Oct'24–Mar'25 (formal sheet)",
+      "description": "FY 24-25 six-month P&L in workbook. Cross-check rent vs Revised sheet.",
+      "path": "snapshots/sw_fy2425/sw_pl_main_oct_mar25.json",
+      "format": "json",
+      "view": "ecpl_pl_table",
+      "source_note": "Regenerate: python scripts/export_sw_pl_workbook.py"
+    },
+    {
+      "id": "sw_revised_pl_summary",
+      "title": "Space Within — Revised P&L summary (Oct–Mar)",
+      "description": "High-level revised figures including rent ₹6L — conflicts with formal P&L rent line until resolved.",
+      "path": "snapshots/sw_fy2425/sw_revised_pl_summary.json",
+      "format": "json",
+      "view": "key_values",
+      "source_note": "Same export script"
+    },
+    {
+      "id": "sw_export_meta",
+      "title": "Space Within workbook — export metadata",
+      "path": "snapshots/sw_fy2425/export_meta.json",
+      "format": "json",
+      "view": "key_values",
+      "source_note": "Period + cessation date"
     },
     {
       "id": "coverage-placeholder",

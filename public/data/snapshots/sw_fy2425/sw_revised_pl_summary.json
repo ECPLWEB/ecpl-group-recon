@@ -1,0 +1,122 @@
+{
+  "source_file": "C:\\Users\\Nakul Mehta\\Downloads\\Space within_P&L Account_Oct to March 25_260108.xlsx",
+  "reconciliation_display_source": "Space Within P&L workbook | Space within_P&L Account_Oct to March 25_260108.xlsx",
+  "financial_year_label": "2024-25",
+  "period_note": "Workbook title Oct–Mar 25; reconciliation window per stakeholder: from 15-Sep-2024. SW operating expenses in books through 30-Jun-2025 only — none after (activity on ECPL).",
+  "sw_expenses_cessation": "2025-06-30",
+  "sheet": "Revised PL_Oct to Mar 25",
+  "summary_rows": [
+    {
+      "sr": 1,
+      "description": "Purchase Bill -",
+      "base_amount": 2811449.3999999994,
+      "gst": 495230.98080000025,
+      "total": 3306602.3808000004,
+      "remarks": null
+    },
+    {
+      "sr": 2,
+      "description": "Petty Cash Bill -",
+      "base_amount": 1277308.0,
+      "gst": 0.0,
+      "total": 1277308.0,
+      "remarks": null
+    },
+    {
+      "sr": 3,
+      "description": "Salary - Oct to March",
+      "base_amount": 2797226.5779938134,
+      "gst": 0.0,
+      "total": 2797226.5779938134,
+      "remarks": null
+    },
+    {
+      "sr": 4,
+      "description": "Stip Staff Salary -Shiv ( Oct to March )",
+      "base_amount": 270000.0,
+      "gst": null,
+      "total": 270000.0,
+      "remarks": "Payment made by STIPL"
+    },
+    {
+      "sr": 5,
+      "description": "Rent- Oct To March",
+      "base_amount": 600000.0,
+      "gst": 0.0,
+      "total": 600000.0,
+      "remarks": null
+    },
+    {
+      "sr": 6,
+      "description": "Sales Amount",
+      "base_amount": 12672787.98,
+      "gst": 2281101.84,
+      "total": 10610921.741799999,
+      "remarks": null
+    },
+    {
+      "sr": 6.1,
+      "description": "Gst already paid - ( Oct to Dec )",
+      "base_amount": 500000.0,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 7,
+      "description": "Effectively Gst will Pay Our Site by GOV.",
+      "base_amount": 1285870.8591999996,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 8,
+      "description": "Stock we have",
+      "base_amount": 1267099.0,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 9,
+      "description": "Profit Margin in Percentage",
+      "base_amount": 0.48796705285100084,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 10,
+      "description": "TDS Rembersment 2% of payment we recived",
+      "base_amount": 0.0,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 11,
+      "description": "Tax deduction 30%",
+      "base_amount": 1855170.9006018564,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 11.11,
+      "description": "Actual Tax we paid =Tax we paid after tds amount less - tax deduction 30%",
+      "base_amount": 1855170.9006018564,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    },
+    {
+      "sr": 12,
+      "description": "Funds we have",
+      "base_amount": 4328732.101404332,
+      "gst": null,
+      "total": null,
+      "remarks": null
+    }
+  ]
+}

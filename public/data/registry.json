@@ -1,6 +1,6 @@
 {
-  "updated": "2026-04-05",
-  "introduction": "Each party below lists where its numbers should come from. Status reflects what is typically loaded into this repo today — update rows as you add snapshots under public/data/snapshots/.",
+  "updated": "2026-04-06",
+  "introduction": "Each party below lists where its numbers should come from. Space Within FY 24-25 P&L workbook is loaded (Oct'24–Mar'25 formal sheet + revised summary); recon anchor 15-Sep-2024; SW expenses in books through 30-Jun-2025 only. Use the Gaps & bank tab for six expense lines vs bank and missing files.",
   "parties": [
     {
       "id": "space_within",

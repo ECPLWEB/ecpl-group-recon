@@ -8,6 +8,7 @@ type DatasetView =
   | "key_values"
   | "nakul_lines"
   | "bank_lines"
+  | "gap_report"
   | "plain_json";
 
 type ManifestDataset = {
@@ -179,6 +180,174 @@ function buildDatasetMap(m: Manifest): Map<string, ManifestDataset> {
   return new Map(m.datasets.map((d) => [d.id, d]));
 }
 
+type GapReport = {
+  title?: string;
+  disclaimer?: string;
+  understood_rules?: string[];
+  period_notes?: Record<string, string>;
+  internal_inconsistency_flag?: Record<string, unknown>;
+  six_expense_lines?: Array<Record<string, unknown>>;
+  three_months_missing_detail?: Record<string, unknown>;
+  what_we_have_in_app_now?: string[];
+  what_is_missing_for_full_bank_tie?: string[];
+  unreconciled_bank_payments?: Record<string, unknown>;
+  vendors_and_outstandings?: Record<string, unknown>;
+  harshad_income_tax_proxy?: Record<string, unknown>;
+  next_files_to_send?: string[];
+};
+
+function renderGapReport(data: GapReport): HTMLElement {
+  const wrap = el("div", { className: "gap-report" });
+  if (data.title) {
+    wrap.appendChild(el("h2", { className: "gap-h2" }, [data.title]));
+  }
+  if (data.disclaimer) {
+    wrap.appendChild(el("p", { className: "banner disclaimer" }, [data.disclaimer]));
+  }
+  if (data.understood_rules?.length) {
+    wrap.appendChild(el("h3", {}, ["Rules we are using"]));
+    const ul = el("ul", { className: "checklist" });
+    for (const r of data.understood_rules) ul.appendChild(el("li", {}, [r]));
+    wrap.appendChild(ul);
+  }
+  if (data.period_notes && typeof data.period_notes === "object") {
+    wrap.appendChild(el("h3", {}, ["Periods"]));
+    const dl = el("dl", { className: "kv-grid" });
+    for (const [k, v] of Object.entries(data.period_notes)) {
+      dl.appendChild(el("dt", {}, [k]));
+      dl.appendChild(el("dd", {}, [String(v)]));
+    }
+    wrap.appendChild(dl);
+  }
+  const inc = data.internal_inconsistency_flag;
+  if (inc && typeof inc === "object") {
+    wrap.appendChild(
+      el("div", { className: "banner", style: "border-color:#c9a227" }, [
+        el("strong", {}, ["Internal inconsistency — resolve before bank tie: "]),
+        document.createTextNode(String(inc.topic ?? "")),
+      ])
+    );
+    const dl2 = el("dl", { className: "kv-grid" });
+    for (const [k, v] of Object.entries(inc)) {
+      if (k === "topic") continue;
+      dl2.appendChild(el("dt", {}, [k]));
+      dl2.appendChild(el("dd", {}, [typeof v === "number" ? formatInr(v) : String(v)]));
+    }
+    wrap.appendChild(dl2);
+  }
+  if (data.six_expense_lines?.length) {
+    wrap.appendChild(el("h3", {}, ["Six expense lines — books vs bank (status)"]));
+    const table = el("table", { className: "data-table gap-six" });
+    table.appendChild(
+      el("thead", {}, [
+        el("tr", {}, [
+          el("th", {}, ["Line"]),
+          el("th", {}, ["Books / notes"]),
+          el("th", {}, ["Bank tie"]),
+          el("th", {}, ["Missing"]),
+        ]),
+      ])
+    );
+    const tb = el("tbody");
+    for (const row of data.six_expense_lines) {
+      const have = Array.isArray(row.data_we_have)
+        ? (row.data_we_have as string[]).join("; ")
+        : "";
+      const miss = Array.isArray(row.data_missing)
+        ? (row.data_missing as string[]).join("; ")
+        : "—";
+      const booksBits: string[] = [];
+      for (const [k, v] of Object.entries(row)) {
+        if (["line", "bank_tie_status", "data_we_have", "data_missing"].includes(k))
+          continue;
+        if (v === undefined || v === null) continue;
+        booksBits.push(`${k}: ${typeof v === "number" ? formatInr(v) : String(v)}`);
+      }
+      if (have) booksBits.push(`Have: ${have}`);
+      tb.appendChild(
+        el("tr", {}, [
+          el("td", {}, [el("strong", {}, [String(row.line ?? "")])]),
+          el("td", { className: "small-cell" }, [booksBits.join(" · ") || "—"]),
+          el("td", {}, [
+            el("span", { className: "badge src-needs_tagging" }, [
+              String(row.bank_tie_status ?? "—"),
+            ]),
+          ]),
+          el("td", { className: "small-cell" }, [miss]),
+        ])
+      );
+    }
+    table.appendChild(tb);
+    wrap.appendChild(table);
+  }
+  if (data.three_months_missing_detail) {
+    wrap.appendChild(el("h3", {}, ["Three months — missing detail (confirm)"]));
+    const t = data.three_months_missing_detail;
+    if (typeof t.user_note === "string") {
+      wrap.appendChild(el("p", {}, [t.user_note]));
+    }
+    if (Array.isArray(t.please_confirm_exact_months)) {
+      const ul = el("ul", { className: "checklist" });
+      for (const x of t.please_confirm_exact_months as string[]) {
+        ul.appendChild(el("li", {}, [x]));
+      }
+      wrap.appendChild(ul);
+    }
+  }
+  const addList = (title: string, items: string[] | undefined) => {
+    if (!items?.length) return;
+    wrap.appendChild(el("h3", {}, [title]));
+    const ul = el("ul", { className: "checklist" });
+    for (const x of items) ul.appendChild(el("li", {}, [x]));
+    wrap.appendChild(ul);
+  };
+  addList("In the app today", data.what_we_have_in_app_now);
+  addList("Still needed for bank ↔ ledger", data.what_is_missing_for_full_bank_tie);
+  const ubp = data.unreconciled_bank_payments;
+  if (ubp && typeof ubp === "object") {
+    wrap.appendChild(el("h3", {}, ["Unreconciled bank payments"]));
+    if (typeof ubp.status === "string") {
+      wrap.appendChild(el("p", {}, [ubp.status]));
+    }
+    if (typeof ubp.explanation === "string") {
+      wrap.appendChild(el("p", { className: "muted small" }, [ubp.explanation]));
+    }
+    if (Array.isArray(ubp.known_slices_in_app)) {
+      const ul = el("ul", { className: "checklist" });
+      for (const x of ubp.known_slices_in_app as string[]) {
+        ul.appendChild(el("li", {}, [x]));
+      }
+      wrap.appendChild(ul);
+    }
+  }
+  const vo = data.vendors_and_outstandings;
+  if (vo && typeof vo === "object") {
+    wrap.appendChild(el("h3", {}, ["Vendors & outstandings"]));
+    wrap.appendChild(el("p", {}, [String(vo.status ?? "")]));
+    if (Array.isArray(vo.collect)) {
+      const ul = el("ul", { className: "checklist" });
+      for (const x of vo.collect as string[]) ul.appendChild(el("li", {}, [x]));
+      wrap.appendChild(ul);
+    }
+  }
+  const ht = data.harshad_income_tax_proxy;
+  if (ht && typeof ht === "object") {
+    wrap.appendChild(el("h3", {}, ["Harshad tax — proxy (30% × SW profit)"]));
+    const dl = el("dl", { className: "kv-grid" });
+    for (const [k, v] of Object.entries(ht)) {
+      dl.appendChild(el("dt", {}, [k]));
+      const str =
+        typeof v === "number" && (k.includes("inr") || k.includes("percent"))
+          ? formatInr(v)
+          : String(v);
+      dl.appendChild(el("dd", {}, [str]));
+    }
+    wrap.appendChild(dl);
+  }
+  addList("Next files to collect", data.next_files_to_send);
+  return wrap;
+}
+
 function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLElement {
   const v = view ?? "plain_json";
   if (data === null || data === undefined) {
@@ -188,6 +357,10 @@ function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLEleme
     return el("pre", { className: "json-pre" }, [JSON.stringify(data, null, 2)]);
   }
   const o = data as Record<string, unknown>;
+
+  if (v === "gap_report" && "six_expense_lines" in o) {
+    return renderGapReport(o as GapReport);
+  }
 
   if (v === "ecpl_pl_table" && Array.isArray(o.pl_lines)) {
     const table = el("table", { className: "data-table" });
@@ -376,6 +549,15 @@ function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLEleme
         dl.appendChild(el("dt", {}, [k]));
         dl.appendChild(
           el("dd", {}, [el("pre", { className: "json-pre tight" }, [JSON.stringify(val, null, 2)])])
+        );
+        continue;
+      }
+      if (Array.isArray(val)) {
+        dl.appendChild(el("dt", {}, [k]));
+        dl.appendChild(
+          el("dd", {}, [
+            el("pre", { className: "json-pre tight" }, [JSON.stringify(val, null, 2)]),
+          ])
         );
         continue;
       }
@@ -694,7 +876,7 @@ function renderDashboardTab(
   );
   wrap.appendChild(
     el("p", { className: "lead" }, [
-      "ECPL expenses through 28-Feb-26: use the ECPL P&L tab and linked JSON as the main total. Questions tab: open reconciled snapshots per topic. Data files: load any manifest entry.",
+      "ECPL expenses through 28-Feb-26: ECPL P&L tab. Space Within FY 24-25: snapshots under sw_fy2425. Gaps & bank tab: six expense lines (Rent, MSEDCL, Salary, Food, Water, Petty) — what we have, what’s missing, bank tie-up plan, SW rent conflict. Questions: evidence buttons.",
     ])
   );
 
@@ -879,6 +1061,22 @@ async function main() {
     }
 
     const dash = renderDashboardTab(manifest, reg, qf);
+
+    let gapsPanel = el("div", { className: "view-panel" });
+    try {
+      const gapsData = await loadJson<GapReport>("reconciliation_gaps.json");
+      gapsPanel.appendChild(renderGapReport(gapsData));
+      gapsPanel.appendChild(
+        el("p", { className: "muted small" }, [
+          "Also open this file from All data files → Gaps checklist for raw JSON / sharing.",
+        ])
+      );
+    } catch {
+      gapsPanel.appendChild(
+        el("p", { className: "error" }, ["Could not load reconciliation_gaps.json"])
+      );
+    }
+
     const ecplTab = renderEcplPlTab(plMain, manifestById);
     const parties = renderPartiesView(reg);
     const questions = renderQuestionsView(qf, manifestById);
@@ -890,6 +1088,7 @@ async function main() {
 
     const { nav, body } = setupTabs([
       { id: "dash", label: "Overview", element: dash },
+      { id: "gaps", label: "Gaps & bank", element: gapsPanel },
       { id: "ecpl", label: "ECPL P&L", element: ecplTab },
       { id: "parties", label: "Parties & sources", element: parties },
       { id: "qa", label: "Questions", element: questions },

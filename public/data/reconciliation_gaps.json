@@ -1,0 +1,160 @@
+{
+  "updated": "2026-04-06",
+  "title": "Data coverage, six expense lines, and bank tie-up — checklist",
+  "disclaimer": "This is a working checklist for collection and reconciliation. It does not replace audit. Bank ↔ ledger matching is not auto-run in this app until you supply tagged exports.",
+  "understood_rules": [
+    "Space Within P&L workbook is FY 2024-25 framing; your reconciliation start date is 15-Sep-2024 (workbook main sheet is Oct'24–Mar'25 — align or restate opening balances for 15-Sep–30-Sep).",
+    "SW books carry expenses only through 30-Jun-2025; after that expenses are on ECPL, not SW.",
+    "ECPL P&L (1-Apr-2025 to 28-Feb-2026) remains the main authority for ECPL operating expenses in that window.",
+    "You flagged ~three months where complete expense detail (vouchers / line backup) is still missing — exact months to confirm with finance (see below).",
+    "Target expense categories for bank reconciliation: Rent, MSEDCL (Torrent electricity), Salary (ECPL from Apr'25), Food Exp, Water Bill, Petty cash."
+  ],
+  "period_notes": {
+    "sw_pl_workbook_sheet_period": "P&L_Oct 24 to Mar 25_Space — 6 months Oct'24–Mar'25 in file title",
+    "reconciliation_anchor": "15-Sep-2024 per stakeholder — gap vs workbook: need opening Sep'24 (partial month) treatment",
+    "sw_last_expense_month": "2025-06-30",
+    "ecpl_pl_window": "2025-04-01 to 2026-02-28 (loaded in app)"
+  },
+  "internal_inconsistency_flag": {
+    "topic": "Space Within — Rent (same workbook, two sheets)",
+    "formal_pl_rent_inr": 100000,
+    "formal_pl_note": "P&L_Oct 24 to Mar 25_Space — Rent line ₹1,00,000",
+    "revised_summary_rent_inr": 600000,
+    "revised_note": "Revised PL_Oct to Mar 25 — Rent Oct To March ₹6,00,000",
+    "action": "Resolve which rent total is correct for Oct'24–Mar'25 before bank tie-up."
+  },
+  "six_expense_lines": [
+    {
+      "line": "Rent",
+      "space_within_pl_oct_mar_formal_inr": 100000,
+      "space_within_revised_summary_inr": 600000,
+      "ecpl_monthly_apr25_feb26_total_inr": 1170000,
+      "bank_tie_status": "NOT_DONE",
+      "data_we_have": [
+        "ECPL monthly rent row (11 months in P&L workbook export)",
+        "SW P&L + Revised summary (conflicting rent — see flag)"
+      ],
+      "data_missing": [
+        "Bank debits tagged ‘rent / landlord / Harshad’ for SW + ECPL for full period",
+        "Written lease map: which entity paid which months"
+      ]
+    },
+    {
+      "line": "MSEDCL / Torrent (electricity)",
+      "space_within_pl_oct_mar_electricity_inr": 600000,
+      "ecpl_monthly_msedcl_inr": 702750,
+      "ecpl_monthly_msedcl_f1_inr": 662191.31,
+      "bank_tie_status": "NOT_DONE",
+      "data_we_have": [
+        "SW P&L Electricity total Oct–Mar",
+        "ECPL MSEDCL + MSEDCL F1 rows (FY 25–26 P&L monthly)"
+      ],
+      "data_missing": [
+        "Torrent/MSEDCL bills vs each bank debit (SW HDFC + ECPL Axis)",
+        "Clarify F1 split vs main MSEDCL in books"
+      ]
+    },
+    {
+      "line": "Salary",
+      "space_within_pl_oct_mar_indirect_inr": 3067226.58,
+      "ecpl_monthly_salary_total_inr": 9641711.58,
+      "bank_tie_status": "NOT_DONE",
+      "data_we_have": [
+        "SW P&L salary expense Oct–Mar",
+        "ECPL monthly salary Apr'25–Feb'26 (per your note: salary from Apr'25 on ECPL sheet)",
+        "Multiple salary detail sheets inside SW Excel (not exported to app)"
+      ],
+      "data_missing": [
+        "Bank salary batches vs payroll for SW (through Jun'25) and ECPL",
+        "PF/ESI/challan tie if required for tax",
+        "Apr–Jun 2025 overlap: confirm last SW salary month vs first ECPL salary month"
+      ]
+    },
+    {
+      "line": "Food Exp",
+      "space_within_pl_oct_mar": "Not a separate line on SW formal P&L (likely inside Petty / not split)",
+      "ecpl_monthly_food_inr": 227737,
+      "bank_tie_status": "NOT_DONE",
+      "data_we_have": ["ECPL Food Exp row Apr'25–Feb'26"],
+      "data_missing": [
+        "SW-side food if booked only through petty — need petty categorisation or separate ledger",
+        "Bank/card trace for food payments"
+      ]
+    },
+    {
+      "line": "Water Bill",
+      "space_within_pl_water_inr": 30000,
+      "ecpl_monthly_water_inr": 91000,
+      "bank_tie_status": "NOT_DONE",
+      "data_we_have": ["SW water Oct–Mar", "ECPL water Apr'25–Feb'26"],
+      "data_missing": ["Municipal/water vendor bills vs bank debits"]
+    },
+    {
+      "line": "Petty cash",
+      "space_within_pl_petty_inr": 1277308,
+      "ecpl_monthly_petty_inr": 5763606.5,
+      "bank_tie_status": "NOT_DONE",
+      "data_we_have": [
+        "SW P&L petty total",
+        "ECPL petty total in monthly export",
+        "Detailed petty sheet in SW Excel (1096+ rows — not in app JSON)"
+      ],
+      "data_missing": [
+        "Month-by-month petty rollforward tied to cash withdrawals + imprest",
+        "Every petty line matched to bank outflow or physical cash voucher"
+      ]
+    }
+  ],
+  "three_months_missing_detail": {
+    "user_note": "You reported ~3 months of complete expense detail still missing (while SW expenses exist only until Jun-2025).",
+    "please_confirm_exact_months": [
+      "Option A: Jul, Aug, Sep 2025 (post SW cessation — ECPL-only, if voucher pack incomplete)",
+      "Option B: Another fiscal quarter — specify",
+      "Option C: Sep 2024 partial + two other months — if 15-Sep anchor drives restatement"
+    ],
+    "action": "Reply with exact month triple; we will label snapshots accordingly."
+  },
+  "what_we_have_in_app_now": [
+    "ECPL P&L + monthly + sales/purchase summaries + printed-invoice cross-check (JSON under snapshots/ecpl_fy2526/)",
+    "Space Within formal P&L Oct–Mar + Revised summary (JSON under snapshots/sw_fy2425/)",
+    "ECPL Axis slices: Harshad/Nakul payments, STPL credits (JSON under snapshots/bank/)",
+    "This checklist (reconciliation_gaps.json)"
+  ],
+  "what_is_missing_for_full_bank_tie": [
+    "Space Within HDFC: export JSON snapshot into public/data/snapshots/bank/ with narration tags for Rent, Torrent, Salary, Food, Water, Petty, Tax, STPL, ECPL",
+    "ECPL Axis: same six-line tags for Apr'25 onwards",
+    "Unmatched bank report: debits/credits with no voucher / ledger hit (generate from bank CSV + Tally export)",
+    "Vendor outstanding: aged payables from Tally as at 31-Mar-2026 (or chosen date)",
+    "Resolution of SW Rent ₹1L vs ₹6L conflict between sheets"
+  ],
+  "unreconciled_bank_payments": {
+    "status": "NOT_COMPUTED_IN_APP",
+    "explanation": "The app does not yet run row-level bank ↔ ledger matching. Provide: (1) bank CSV with stable narration, (2) payment register or Tally export with voucher numbers, (3) optional match file: bank_ref,amount,date,voucher_no,status.",
+    "known_slices_in_app": [
+      "ECPL → Harshad / Nakul ME (Axis) — see bank/ecpl_axis_harshad_payments.json",
+      "STPL → ECPL credits — see bank/stpl_credits_to_ecpl_axis.json"
+    ]
+  },
+  "vendors_and_outstandings": {
+    "status": "NOT_IN_APP",
+    "collect": [
+      "Creditor ageing (SW + ECPL) as at reporting date",
+      "List of vendors with GRN but no payment / partial payment",
+      "Any card payments (Nakul CC) mapped to ECPL expense lines"
+    ]
+  },
+  "harshad_income_tax_proxy": {
+    "formula": "30% × Space Within profit (per your policy)",
+    "basis_pl_loaded": "P&L_Oct 24 to Mar 25_Space — Nett Profit (same period as sheet, not adjusted to 15-Sep yet)",
+    "sw_net_profit_inr": 813027.43,
+    "thirty_percent_inr": 243908.23,
+    "caveat": "Profit must be restated if (a) 15-Sep-2024 opening differs, (b) Revised PL logic replaces formal P&L, or (c) period extended beyond Mar'25 for SW. Cross-check actual advance/self-assessment paid on SW HDFC."
+  },
+  "next_files_to_send": [
+    "Space Within HDFC FY 24-25 + FY 25-26 through Jun-2025 (CSV or JSON snapshot for app)",
+    "ECPL Axis FY 25-26 full CSV (already partially parsed — refresh if new months)",
+    "Tally payment / petty cash voucher export for the three missing-detail months (once months are named)",
+    "Decision note resolving SW Rent ₹1,00,000 vs ₹6,00,000",
+    "Vendor outstanding report + unmatched bank lines spreadsheet"
+  ]
+}
