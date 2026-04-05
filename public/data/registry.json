@@ -140,6 +140,7 @@
     }
   ],
   "reconciliation_principles": [
+    "ECPL operating expenses for 1 Apr 2025 – 28 Feb 2026: use the CA P&L workbook (cleaned JSON: ecpl_pl_main) as the main expense and profit picture unless superseded by statutory filings.",
     "Printed ECPL sales total overrides Tally sales when they differ.",
     "GSTR-2B / 2A style data = inward (purchases), not outward sales.",
     "For Oct 2024 – Mar 2026, treat Space Within OD interest charged by the bank as the amount to make good when allocating to ECPL (per your narrative).",

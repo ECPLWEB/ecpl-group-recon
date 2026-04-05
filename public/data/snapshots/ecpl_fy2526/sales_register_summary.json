@@ -1,0 +1,14 @@
+{
+  "source_file": "C:\\Users\\Nakul Mehta\\Downloads\\PL_Apr to Feb_26_ECPL.xlsx",
+  "reconciliation_display_source": "ECPL P&L workbook | PL_Apr to Feb_26_ECPL.xlsx",
+  "period_label": "1-Apr-2025 to 28-Feb-2026",
+  "authority_note": "ECPL operating expenses for this window are taken from this P&L (and backing sheets in the same workbook). Use this as the main expense total unless superseded by a signed statutory filing.",
+  "sheet": "Sales Register_Apr_25_To_Feb_26",
+  "data_rows_excl_grand_total": 430,
+  "sum_gross_total_inr": 47345661.06999999,
+  "sum_value_inr": 0.0,
+  "sum_cgst_9_inr": 1811524.4500000002,
+  "sum_sgst_9_inr": 1808068.15,
+  "sum_igst_18_inr": 3599170.7699999996,
+  "matches_pl_gross_sales": true
+}

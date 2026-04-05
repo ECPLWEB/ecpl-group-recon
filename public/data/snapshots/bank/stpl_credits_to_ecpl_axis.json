@@ -1,0 +1,20 @@
+{
+  "reconciliation_display_source": "ECPL Axis CA | NEFT credits where particulars contain SIGN TECHNIC INDUSTRIES",
+  "period_note": "FY 25-26 statement slice; narrations include advances / Space within / material — not automatically 'loan balance due'.",
+  "total_credit_inr": 8575200,
+  "line_count": 12,
+  "lines": [
+    { "txn_date": "05/05/2025", "credit_inr": 1500000, "narration_hint": "ATTN/" },
+    { "txn_date": "14/05/2025", "credit_inr": 1100000, "narration_hint": "Space within" },
+    { "txn_date": "26/05/2025", "credit_inr": 1500000, "narration_hint": "Advance for material" },
+    { "txn_date": "18/06/2025", "credit_inr": 500000, "narration_hint": "" },
+    { "txn_date": "24/06/2025", "credit_inr": 300000, "narration_hint": "" },
+    { "txn_date": "26/06/2025", "credit_inr": 400000, "narration_hint": "" },
+    { "txn_date": "01/07/2025", "credit_inr": 200000, "narration_hint": "" },
+    { "txn_date": "04/07/2025", "credit_inr": 575200, "narration_hint": "" },
+    { "txn_date": "08/07/2025", "credit_inr": 700000, "narration_hint": "" },
+    { "txn_date": "16/07/2025", "credit_inr": 100000, "narration_hint": "" },
+    { "txn_date": "13/12/2025", "credit_inr": 1000000, "narration_hint": "" },
+    { "txn_date": "18/03/2026", "credit_inr": 700000, "narration_hint": "" }
+  ]
+}

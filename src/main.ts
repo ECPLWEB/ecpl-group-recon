@@ -2,6 +2,14 @@ import "./style.css";
 
 type DatasetFormat = "json" | "csv";
 
+type DatasetView =
+  | "ecpl_pl_table"
+  | "ecpl_monthly"
+  | "key_values"
+  | "nakul_lines"
+  | "bank_lines"
+  | "plain_json";
+
 type ManifestDataset = {
   id: string;
   title: string;
@@ -9,6 +17,7 @@ type ManifestDataset = {
   path: string;
   format: DatasetFormat;
   source_note?: string;
+  view?: DatasetView;
 };
 
 type Manifest = {
@@ -59,6 +68,11 @@ type QuestionFigure = {
   note: string;
 };
 
+type EvidenceLink = {
+  dataset_id: string;
+  label: string;
+};
+
 type ReconciliationQuestion = {
   id: string;
   title: string;
@@ -68,6 +82,7 @@ type ReconciliationQuestion = {
   data_sources: string[];
   gaps: string[];
   advice: string;
+  evidence?: EvidenceLink[];
 };
 
 type QuestionsFile = {
@@ -101,6 +116,18 @@ function el<K extends keyof HTMLElementTagNameMap>(
     }
   }
   return node;
+}
+
+function formatInr(n: number): string {
+  try {
+    return new Intl.NumberFormat("en-IN", {
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 2,
+    }).format(n);
+  } catch {
+    return String(n);
+  }
 }
 
 function statusLabel(s: SourceStatus | QuestionStatus): string {
@@ -148,6 +175,223 @@ function tableFromRows(rows: string[][]): HTMLTableElement {
   return table;
 }
 
+function buildDatasetMap(m: Manifest): Map<string, ManifestDataset> {
+  return new Map(m.datasets.map((d) => [d.id, d]));
+}
+
+function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLElement {
+  const v = view ?? "plain_json";
+  if (data === null || data === undefined) {
+    return el("p", { className: "muted" }, ["No data"]);
+  }
+  if (typeof data !== "object") {
+    return el("pre", { className: "json-pre" }, [JSON.stringify(data, null, 2)]);
+  }
+  const o = data as Record<string, unknown>;
+
+  if (v === "ecpl_pl_table" && Array.isArray(o.pl_lines)) {
+    const table = el("table", { className: "data-table" });
+    const thead = el("thead");
+    thead.appendChild(
+      el("tr", {}, [
+        el("th", {}, ["#"]),
+        el("th", {}, ["Particulars"]),
+        el("th", {}, ["Amount"]),
+        el("th", {}, ["% of gross"]),
+        el("th", {}, ["Per month"]),
+      ])
+    );
+    table.appendChild(thead);
+    const tbody = el("tbody");
+    for (const row of o.pl_lines as Record<string, unknown>[]) {
+      const amt = row.amount_inr;
+      const tr = el("tr", {}, [
+        el("td", {}, [String(row.line_order ?? "")]),
+        el("td", {}, [String(row.particulars ?? "")]),
+        el("td", { className: "num" }, [
+          typeof amt === "number" ? formatInr(amt) : String(amt ?? "—"),
+        ]),
+        el("td", { className: "num" }, [
+          row.pct_of_gross_sales != null
+            ? String(row.pct_of_gross_sales)
+            : "—",
+        ]),
+        el("td", { className: "num" }, [
+          typeof row.per_month_inr === "number"
+            ? formatInr(row.per_month_inr)
+            : "—",
+        ]),
+      ]);
+      tbody.appendChild(tr);
+    }
+    table.appendChild(tbody);
+    const wrap = el("div", { className: "json-table-wrap" });
+    if (typeof o.authority_note === "string") {
+      wrap.appendChild(el("p", { className: "authority-note" }, [o.authority_note]));
+    }
+    wrap.appendChild(table);
+    return wrap;
+  }
+
+  if (v === "ecpl_monthly" && Array.isArray(o.rows)) {
+    const wrap = el("div", { className: "json-table-wrap" });
+    if (typeof o.authority_note === "string") {
+      wrap.appendChild(el("p", { className: "authority-note" }, [o.authority_note]));
+    }
+    const table = el("table", { className: "data-table" });
+    table.appendChild(
+      el("thead", {}, [
+        el("tr", {}, [
+          el("th", {}, ["Expense"]),
+          el("th", {}, ["Type"]),
+          el("th", {}, ["Months (Apr–Feb)"]),
+          el("th", {}, ["Row total"]),
+        ]),
+      ])
+    );
+    const tbody = el("tbody");
+    for (const row of o.rows as Record<string, unknown>[]) {
+      const months = row.monthly_amounts_inr;
+      let monthStr = "—";
+      if (Array.isArray(months)) {
+        const parts = months.map((x) =>
+          typeof x === "number" && !Number.isNaN(x) ? formatInr(x) : "—"
+        );
+        monthStr = parts.join(" · ");
+      }
+      const tot = row.row_total_inr;
+      tbody.appendChild(
+        el("tr", {}, [
+          el("td", {}, [String(row.expense_line ?? "")]),
+          el("td", {}, [String(row.type ?? "—")]),
+          el("td", { className: "month-cells" }, [monthStr]),
+          el("td", { className: "num" }, [
+            typeof tot === "number" ? formatInr(tot) : String(tot ?? "—"),
+          ]),
+        ])
+      );
+    }
+    table.appendChild(tbody);
+    wrap.appendChild(table);
+    return wrap;
+  }
+
+  if (v === "nakul_lines" && Array.isArray(o.lines)) {
+    const table = el("table", { className: "data-table" });
+    table.appendChild(
+      el("thead", {}, [
+        el("tr", {}, [
+          el("th", {}, ["Particulars"]),
+          el("th", {}, ["Type"]),
+          el("th", {}, ["Amount"]),
+          el("th", {}, ["Note"]),
+        ]),
+      ])
+    );
+    const tbody = el("tbody");
+    for (const row of o.lines as Record<string, unknown>[]) {
+      const amt = row.amount_inr;
+      tbody.appendChild(
+        el("tr", {}, [
+          el("td", {}, [String(row.particulars ?? "")]),
+          el("td", {}, [String(row.type ?? "—")]),
+          el("td", { className: "num" }, [
+            typeof amt === "number" ? formatInr(amt) : String(amt ?? "—"),
+          ]),
+          el("td", {}, [String(row.period_note ?? row.classification_note ?? "—")]),
+        ])
+      );
+    }
+    table.appendChild(tbody);
+    return el("div", { className: "json-table-wrap" }, [table]);
+  }
+
+  if (v === "bank_lines" && Array.isArray(o.lines)) {
+    const table = el("table", { className: "data-table" });
+    table.appendChild(
+      el("thead", {}, [
+        el("tr", {}, [
+          el("th", {}, ["Date"]),
+          el("th", {}, ["Debit"]),
+          el("th", {}, ["Credit"]),
+          el("th", {}, ["Detail"]),
+        ]),
+      ])
+    );
+    const tbody = el("tbody");
+    for (const row of o.lines as Record<string, unknown>[]) {
+      const dr = row.debit_inr;
+      const cr = row.credit_inr;
+      const narr =
+        String(row.particulars ?? row.narration_hint ?? row.narration ?? "");
+      tbody.appendChild(
+        el("tr", {}, [
+          el("td", {}, [String(row.txn_date ?? "—")]),
+          el("td", { className: "num" }, [
+            typeof dr === "number" ? formatInr(dr) : "—",
+          ]),
+          el("td", { className: "num" }, [
+            typeof cr === "number" ? formatInr(cr) : "—",
+          ]),
+          el("td", {}, [narr]),
+        ])
+      );
+    }
+    table.appendChild(tbody);
+    const wrap = el("div", { className: "json-table-wrap" });
+    if (typeof o.reconciliation_display_source === "string") {
+      wrap.appendChild(
+        el("p", { className: "meta-inline" }, [o.reconciliation_display_source])
+      );
+    }
+    wrap.appendChild(table);
+    if (o.sum_neft_harshad_inr != null) {
+      wrap.appendChild(
+        el("p", { className: "kv-line" }, [
+          el("strong", {}, ["Sum NEFT (Harshad): "]),
+          formatInr(Number(o.sum_neft_harshad_inr)),
+        ])
+      );
+    }
+    if (o.total_credit_inr != null) {
+      wrap.appendChild(
+        el("p", { className: "kv-line" }, [
+          el("strong", {}, ["Total credits: "]),
+          formatInr(Number(o.total_credit_inr)),
+        ])
+      );
+    }
+    if (typeof o.gap_note === "string") {
+      wrap.appendChild(el("p", { className: "muted small" }, [o.gap_note]));
+    }
+    return wrap;
+  }
+
+  if (v === "key_values") {
+    const dl = el("dl", { className: "kv-grid" });
+    const skip = new Set(["pl_lines", "rows", "lines"]);
+    for (const [k, val] of Object.entries(o)) {
+      if (skip.has(k)) continue;
+      if (val !== null && typeof val === "object" && !Array.isArray(val)) {
+        dl.appendChild(el("dt", {}, [k]));
+        dl.appendChild(
+          el("dd", {}, [el("pre", { className: "json-pre tight" }, [JSON.stringify(val, null, 2)])])
+        );
+        continue;
+      }
+      let display: string;
+      if (typeof val === "number") display = formatInr(val);
+      else if (typeof val === "boolean") display = val ? "yes" : "no";
+      else display = val == null ? "—" : String(val);
+      dl.appendChild(el("dt", {}, [k]));
+      dl.appendChild(el("dd", {}, [display]));
+    }
+    return el("div", { className: "json-table-wrap" }, [dl]);
+  }
+
+  return el("pre", { className: "json-pre" }, [JSON.stringify(data, null, 2)]);
+}
+
 async function loadJson<T>(path: string): Promise<T> {
   const res = await fetch(dataUrl(path));
   if (!res.ok) throw new Error(`${path}: ${res.status}`);
@@ -166,7 +410,7 @@ function renderDatasetCard(ds: ManifestDataset): HTMLElement {
   const err = el("div", { className: "error" });
   err.style.display = "none";
 
-  const btn = el("button", { type: "button" }, ["Load preview"]);
+  const btn = el("button", { type: "button" }, ["Load / refresh"]);
   btn.addEventListener("click", async () => {
     btn.disabled = true;
     err.style.display = "none";
@@ -181,7 +425,7 @@ function renderDatasetCard(ds: ManifestDataset): HTMLElement {
 
       if (ds.format === "json") {
         const data = JSON.parse(text) as unknown;
-        previewHost.appendChild(el("pre", {}, [JSON.stringify(data, null, 2)]));
+        previewHost.appendChild(renderJsonView(data, ds.view));
       } else {
         previewHost.appendChild(tableFromRows(parseSimpleCsv(text, 51)));
       }
@@ -197,6 +441,7 @@ function renderDatasetCard(ds: ManifestDataset): HTMLElement {
   });
 
   const metaBits = [`format: ${ds.format}`, `file: data/${ds.path}`];
+  if (ds.view) metaBits.push(`view: ${ds.view}`);
   if (ds.source_note) metaBits.push(ds.source_note);
 
   return el("article", { className: "card" }, [
@@ -207,6 +452,88 @@ function renderDatasetCard(ds: ManifestDataset): HTMLElement {
     err,
     previewHost,
   ]);
+}
+
+function attachEvidencePanel(
+  card: HTMLElement,
+  evidence: EvidenceLink[],
+  manifestById: Map<string, ManifestDataset>
+): void {
+  if (!evidence.length) return;
+
+  const head = el("h3", {}, ["Reconciled data — click to load"]);
+  const bar = el("div", { className: "evidence-bar" });
+  const host = el("div", { className: "evidence-host" });
+  host.style.display = "none";
+
+  let openId: string | null = null;
+
+  for (const ev of evidence) {
+    const ds = manifestById.get(ev.dataset_id);
+    const btn = el(
+      "button",
+      { type: "button", className: "evidence-btn" },
+      [ds ? `${ev.label}` : `${ev.label} (missing manifest id)`]
+    );
+    btn.addEventListener("click", async () => {
+      if (!ds) {
+        host.style.display = "block";
+        host.replaceChildren(
+          el("p", { className: "error" }, [`Unknown dataset_id: ${ev.dataset_id}`])
+        );
+        return;
+      }
+      if (openId === ev.dataset_id && host.style.display === "block") {
+        host.style.display = "none";
+        openId = null;
+        btn.classList.remove("active");
+        return;
+      }
+      for (const b of bar.querySelectorAll("button.evidence-btn")) {
+        b.classList.remove("active");
+      }
+      btn.classList.add("active");
+      openId = ev.dataset_id;
+      host.style.display = "block";
+      host.replaceChildren(
+        el("p", { className: "muted small" }, [
+          `data/${ds.path} · ${ds.title}`,
+        ]),
+        el("div", { className: "evidence-loading" }, ["Loading…"])
+      );
+      try {
+        const res = await fetch(dataUrl(ds.path));
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = JSON.parse(await res.text()) as unknown;
+        host.replaceChildren(
+          el("p", { className: "muted small" }, [`data/${ds.path} · ${ds.title}`])
+        );
+        const meta =
+          data &&
+          typeof data === "object" &&
+          "reconciliation_display_source" in data &&
+          typeof (data as { reconciliation_display_source: string })
+            .reconciliation_display_source === "string"
+            ? (data as { reconciliation_display_source: string })
+                .reconciliation_display_source
+            : null;
+        if (meta) {
+          host.appendChild(el("p", { className: "meta-inline" }, [meta]));
+        }
+        host.appendChild(renderJsonView(data, ds.view));
+      } catch (e) {
+        host.replaceChildren(
+          el("p", { className: "error" }, [
+            e instanceof Error ? e.message : String(e),
+          ])
+        );
+      }
+    });
+    bar.appendChild(btn);
+  }
+
+  const block = el("div", { className: "evidence-block" }, [head, bar, host]);
+  card.appendChild(block);
 }
 
 function renderPartiesView(reg: Registry): HTMLElement {
@@ -245,6 +572,7 @@ function renderPartiesView(reg: Registry): HTMLElement {
     tbl.appendChild(thead);
     const tbody = el("tbody");
     for (const s of party.sources) {
+      const listed = s.in_app_manifest ? "Flagged in registry" : "—";
       tbody.appendChild(
         el("tr", {}, [
           el("td", {}, [el("strong", {}, [s.label])]),
@@ -255,7 +583,7 @@ function renderPartiesView(reg: Registry): HTMLElement {
               statusLabel(s.status),
             ]),
           ]),
-          el("td", {}, [s.in_app_manifest ? "Listed in manifest" : "—"]),
+          el("td", {}, [listed]),
         ])
       );
     }
@@ -267,7 +595,10 @@ function renderPartiesView(reg: Registry): HTMLElement {
   return wrap;
 }
 
-function renderQuestionsView(qf: QuestionsFile): HTMLElement {
+function renderQuestionsView(
+  qf: QuestionsFile,
+  manifestById: Map<string, ManifestDataset>
+): HTMLElement {
   const wrap = el("div", { className: "view-panel" });
 
   wrap.appendChild(
@@ -303,7 +634,7 @@ function renderQuestionsView(qf: QuestionsFile): HTMLElement {
     const srcBlock =
       q.data_sources.length > 0
         ? el("div", { className: "subblock muted" }, [
-            el("h3", {}, ["Source IDs (see registry)"]),
+            el("h3", {}, ["Source IDs (registry)"]),
             el("p", {}, [q.data_sources.join(", ")]),
           ])
         : null;
@@ -322,11 +653,22 @@ function renderQuestionsView(qf: QuestionsFile): HTMLElement {
         el("p", {}, [q.advice]),
       ]),
     ]);
+
+    if (q.evidence?.length) {
+      attachEvidencePanel(card, q.evidence, manifestById);
+    } else {
+      card.appendChild(
+        el("p", { className: "muted small" }, [
+          "No in-app snapshots linked yet — add evidence[] in reconciliation_questions.json.",
+        ])
+      );
+    }
+
     wrap.appendChild(card);
   }
 
   const sug = el("div", { className: "card suggestions" }, [
-    el("h2", {}, ["Next steps (product)"]),
+    el("h2", {}, ["Next steps"]),
     el("ul", { className: "checklist" }, []),
   ]);
   const sul = sug.querySelector("ul")!;
@@ -352,7 +694,7 @@ function renderDashboardTab(
   );
   wrap.appendChild(
     el("p", { className: "lead" }, [
-      "Use the tabs above: parties and source files, reconciling questions with partial answers and gaps, then raw data previews from the manifest.",
+      "ECPL expenses through 28-Feb-26: use the ECPL P&L tab and linked JSON as the main total. Questions tab: open reconciled snapshots per topic. Data files: load any manifest entry.",
     ])
   );
 
@@ -374,14 +716,90 @@ function renderDashboardTab(
     ]),
     el("div", { className: "stat" }, [
       el("span", { className: "stat-n" }, [String(counts.questions)]),
-      el("span", { className: "stat-l" }, ["Tracked questions"]),
+      el("span", { className: "stat-l" }, ["Questions"]),
     ]),
     el("div", { className: "stat" }, [
       el("span", { className: "stat-n" }, [String(counts.datasets)]),
-      el("span", { className: "stat-l" }, ["Manifest files"]),
+      el("span", { className: "stat-l" }, ["Data files"]),
     ]),
   ]);
   wrap.appendChild(grid);
+  return wrap;
+}
+
+function renderEcplPlTab(plData: unknown, manifestById: Map<string, ManifestDataset>): HTMLElement {
+  const wrap = el("div", { className: "view-panel" });
+  wrap.appendChild(
+    el("h2", { className: "tab-title" }, ["ECPL — P&L & workbook snapshots"])
+  );
+  wrap.appendChild(
+    el("p", { className: "lead" }, [
+      "Period: 1 Apr 2025 – 28 Feb 2026. This is the main ECPL operating expense and profit view. Regenerate JSON from Excel with ",
+      el("code", {}, ["python scripts/export_ecpl_pl_workbook.py"]),
+      ".",
+    ])
+  );
+
+  if (plData && typeof plData === "object") {
+    wrap.appendChild(renderJsonView(plData, "ecpl_pl_table"));
+  } else {
+    wrap.appendChild(
+      el("p", { className: "error" }, [
+        "Could not load snapshots/ecpl_fy2526/pl_main.json — run the export script.",
+      ])
+    );
+  }
+
+  const sub = el("div", { className: "card ecpl-subcard" }, [
+    el("h3", {}, ["Load other ECPL workbook extracts"]),
+    el("p", { className: "desc" }, [
+      "Same data as in Questions → evidence buttons and Data files tab.",
+    ]),
+  ]);
+  const bar = el("div", { className: "evidence-bar" });
+  const ids = [
+    "ecpl_pl_monthly",
+    "ecpl_sales_register_summary",
+    "ecpl_purchase_register_summary",
+    "ecpl_nakul_indirect",
+    "ecpl_sales_crosscheck_printed",
+    "ecpl_export_meta",
+  ];
+  const host = el("div", { className: "evidence-host" });
+  host.style.display = "none";
+  let open: string | null = null;
+
+  for (const id of ids) {
+    const ds = manifestById.get(id);
+    if (!ds) continue;
+    const btn = el("button", { type: "button", className: "evidence-btn" }, [ds.title]);
+    btn.addEventListener("click", async () => {
+      if (open === id && host.style.display === "block") {
+        host.style.display = "none";
+        open = null;
+        btn.classList.remove("active");
+        return;
+      }
+      for (const b of bar.querySelectorAll("button")) b.classList.remove("active");
+      btn.classList.add("active");
+      open = id;
+      host.style.display = "block";
+      host.replaceChildren(el("div", { className: "evidence-loading" }, ["Loading…"]));
+      try {
+        const data = await loadJson<unknown>(ds.path);
+        host.replaceChildren(renderJsonView(data, ds.view));
+      } catch (e) {
+        host.replaceChildren(
+          el("p", { className: "error" }, [e instanceof Error ? e.message : String(e)])
+        );
+      }
+    });
+    bar.appendChild(btn);
+  }
+  sub.appendChild(bar);
+  sub.appendChild(host);
+  wrap.appendChild(sub);
+
   return wrap;
 }
 
@@ -452,9 +870,19 @@ async function main() {
       loadJson<QuestionsFile>("reconciliation_questions.json"),
     ]);
 
+    const manifestById = buildDatasetMap(manifest);
+
+    let plMain: unknown = null;
+    try {
+      plMain = await loadJson("snapshots/ecpl_fy2526/pl_main.json");
+    } catch {
+      plMain = null;
+    }
+
     const dash = renderDashboardTab(manifest, reg, qf);
+    const ecplTab = renderEcplPlTab(plMain, manifestById);
     const parties = renderPartiesView(reg);
-    const questions = renderQuestionsView(qf);
+    const questions = renderQuestionsView(qf, manifestById);
 
     const dataSection = el("section", { className: "datasets" });
     for (const ds of manifest.datasets) {
@@ -463,9 +891,10 @@ async function main() {
 
     const { nav, body } = setupTabs([
       { id: "dash", label: "Overview", element: dash },
+      { id: "ecpl", label: "ECPL P&L", element: ecplTab },
       { id: "parties", label: "Parties & sources", element: parties },
-      { id: "qa", label: "Questions & answers", element: questions },
-      { id: "data", label: "Data files", element: dataSection },
+      { id: "qa", label: "Questions", element: questions },
+      { id: "data", label: "All data files", element: dataSection },
     ]);
 
     const shell = el("div", { className: "shell" });
@@ -485,15 +914,11 @@ async function main() {
 
   root.appendChild(
     el("footer", {}, [
-      "Edit ",
-      el("code", {}, ["public/data/registry.json"]),
-      " and ",
-      el("code", {}, ["public/data/reconciliation_questions.json"]),
-      " to update parties and Q&A. Add CSV/JSON under ",
-      el("code", {}, ["public/data/snapshots/"]),
-      " and list them in ",
-      el("code", {}, ["manifest.json"]),
-      ".",
+      "Regenerate ECPL: ",
+      el("code", {}, ["python scripts/export_ecpl_pl_workbook.py"]),
+      ". Edit ",
+      el("code", {}, ["reconciliation_questions.json"]),
+      " evidence[] to link questions to manifest ids.",
     ])
   );
 }

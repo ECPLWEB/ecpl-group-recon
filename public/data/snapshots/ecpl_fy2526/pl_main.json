@@ -1,0 +1,241 @@
+{
+  "source_file": "C:\\Users\\Nakul Mehta\\Downloads\\PL_Apr to Feb_26_ECPL.xlsx",
+  "reconciliation_display_source": "ECPL P&L workbook | PL_Apr to Feb_26_ECPL.xlsx",
+  "period_label": "1-Apr-2025 to 28-Feb-2026",
+  "authority_note": "ECPL operating expenses for this window are taken from this P&L (and backing sheets in the same workbook). Use this as the main expense total unless superseded by a signed statutory filing.",
+  "sheet": "P&L_Apr To_Feb_26_ECPL",
+  "pl_lines": [
+    {
+      "line_order": 0,
+      "particulars": "Gross Sales",
+      "level": 1,
+      "amount_inr": 47345661.07000001,
+      "pct_of_gross_sales": 1.0,
+      "per_month_inr": 4304151.006363637
+    },
+    {
+      "line_order": 1,
+      "particulars": "Less: Sales Tax",
+      "level": 2,
+      "amount_inr": 7218763.370000001,
+      "pct_of_gross_sales": 0.15246937537374636,
+      "per_month_inr": 656251.2154545456
+    },
+    {
+      "line_order": 2,
+      "particulars": "Sales Accounts",
+      "level": 1,
+      "amount_inr": 40126897.7,
+      "pct_of_gross_sales": 0.8475306246262535,
+      "per_month_inr": 3647899.790909091
+    },
+    {
+      "line_order": 3,
+      "particulars": "Sales Gst",
+      "level": 2,
+      "amount_inr": 40126897.7,
+      "pct_of_gross_sales": 0.8475306246262535,
+      "per_month_inr": 3647899.790909091
+    },
+    {
+      "line_order": 4,
+      "particulars": "Cash Sales",
+      "level": 2,
+      "amount_inr": 0.0,
+      "pct_of_gross_sales": 0.0,
+      "per_month_inr": 0.0
+    },
+    {
+      "line_order": 5,
+      "particulars": "Cost of Sales :",
+      "level": 1,
+      "amount_inr": 20350713.370000005,
+      "pct_of_gross_sales": 0.42983270082366604,
+      "per_month_inr": 1850064.8518181823
+    },
+    {
+      "line_order": 6,
+      "particulars": "Opening Stock",
+      "level": 1,
+      "amount_inr": 881469.8,
+      "pct_of_gross_sales": 0.018617752505277245,
+      "per_month_inr": null
+    },
+    {
+      "line_order": 7,
+      "particulars": "Add: Purchase Accounts",
+      "level": 1,
+      "amount_inr": 20864127.470000003,
+      "pct_of_gross_sales": 0.4406766533294917,
+      "per_month_inr": 1896738.860909091
+    },
+    {
+      "line_order": 8,
+      "particulars": "Purchase CASH (Expenses) -",
+      "level": 2,
+      "amount_inr": 0.0,
+      "pct_of_gross_sales": 0.0,
+      "per_month_inr": 0.0
+    },
+    {
+      "line_order": 9,
+      "particulars": "Purchase GST (Goods) -",
+      "level": 2,
+      "amount_inr": 20864127.470000003,
+      "pct_of_gross_sales": 0.4406766533294917,
+      "per_month_inr": 1896738.860909091
+    },
+    {
+      "line_order": 10,
+      "particulars": "Purchase Less in Tally",
+      "level": 2,
+      "amount_inr": 0.0,
+      "pct_of_gross_sales": 0.0,
+      "per_month_inr": 0.0
+    },
+    {
+      "line_order": 11,
+      "particulars": "Less: Closing Stock",
+      "level": 1,
+      "amount_inr": 3586370.9,
+      "pct_of_gross_sales": 0.0757486709225074,
+      "per_month_inr": null
+    },
+    {
+      "line_order": 12,
+      "particulars": "Material Consumption",
+      "level": 1,
+      "amount_inr": 18159226.370000005,
+      "pct_of_gross_sales": 0.38354573491226157,
+      "per_month_inr": 1650838.7609090914
+    },
+    {
+      "line_order": 13,
+      "particulars": "Direct Expenses",
+      "level": 1,
+      "amount_inr": 2191487.0,
+      "pct_of_gross_sales": 0.04628696591140447,
+      "per_month_inr": 199226.0909090909
+    },
+    {
+      "line_order": 14,
+      "particulars": "Electricity",
+      "level": 2,
+      "amount_inr": 702750.0,
+      "pct_of_gross_sales": 0.014842965207751399,
+      "per_month_inr": 63886.36363636364
+    },
+    {
+      "line_order": 15,
+      "particulars": "Water Bill",
+      "level": 2,
+      "amount_inr": 91000.0,
+      "pct_of_gross_sales": 0.0019220346266885483,
+      "per_month_inr": 8272.727272727272
+    },
+    {
+      "line_order": 16,
+      "particulars": "Rent",
+      "level": 2,
+      "amount_inr": 1170000.0,
+      "pct_of_gross_sales": 0.024711873771709907,
+      "per_month_inr": 106363.63636363637
+    },
+    {
+      "line_order": 17,
+      "particulars": "Fooding Exp",
+      "level": 2,
+      "amount_inr": 227737.0,
+      "pct_of_gross_sales": 0.004810092305254614,
+      "per_month_inr": 20703.363636363636
+    },
+    {
+      "line_order": 18,
+      "particulars": "Gross Profit :",
+      "level": 1,
+      "amount_inr": 19776184.33,
+      "pct_of_gross_sales": 0.4176979238025875,
+      "per_month_inr": 1797834.939090909
+    },
+    {
+      "line_order": 19,
+      "particulars": "Indirect Expenses",
+      "level": 1,
+      "amount_inr": 15537858.746666664,
+      "pct_of_gross_sales": 0.3281791487438336,
+      "per_month_inr": 1412532.613333333
+    },
+    {
+      "line_order": 20,
+      "particulars": "Salary Expenses",
+      "level": 2,
+      "amount_inr": 9641711.579999998,
+      "pct_of_gross_sales": 0.2036450935967467,
+      "per_month_inr": 876519.2345454544
+    },
+    {
+      "line_order": 21,
+      "particulars": "Petty Cash",
+      "level": 2,
+      "amount_inr": 5763606.5,
+      "pct_of_gross_sales": 0.12173462931436473,
+      "per_month_inr": 523964.2272727273
+    },
+    {
+      "line_order": 22,
+      "particulars": "Odoo Expenses",
+      "level": 2,
+      "amount_inr": 28368.666666666668,
+      "pct_of_gross_sales": 0.0005991819741353685,
+      "per_month_inr": 2578.969696969697
+    },
+    {
+      "line_order": 23,
+      "particulars": "Internet charges",
+      "level": 2,
+      "amount_inr": 48000.0,
+      "pct_of_gross_sales": 0.0010138204624291244,
+      "per_month_inr": 4363.636363636364
+    },
+    {
+      "line_order": 24,
+      "particulars": "Gmail work-space charges",
+      "level": 2,
+      "amount_inr": 20172.0,
+      "pct_of_gross_sales": 0.00042605804933583955,
+      "per_month_inr": 1833.8181818181818
+    },
+    {
+      "line_order": 25,
+      "particulars": "Website development charges",
+      "level": 2,
+      "amount_inr": 36000.0,
+      "pct_of_gross_sales": 0.0007603653468218433,
+      "per_month_inr": 3272.7272727272725
+    },
+    {
+      "line_order": 26,
+      "particulars": "Nett Profit before Depreciation",
+      "level": 1,
+      "amount_inr": 4238325.583333334,
+      "pct_of_gross_sales": 0.08951877505875394,
+      "per_month_inr": 385302.3257575758
+    },
+    {
+      "line_order": 27,
+      "particulars": "Depreciation",
+      "level": 1,
+      "amount_inr": 0.0,
+      "pct_of_gross_sales": 0.0,
+      "per_month_inr": 0.0
+    },
+    {
+      "line_order": 28,
+      "particulars": "Nett Profit:",
+      "level": 1,
+      "amount_inr": 4238325.583333334,
+      "pct_of_gross_sales": 0.08951877505875394,
+      "per_month_inr": 385302.3257575758
+    }
+  ]
+}

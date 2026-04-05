@@ -1,19 +1,101 @@
 {
   "updated": "2026-04-05",
-  "coverage_note": "Dashboard tabs load registry.json + reconciliation_questions.json. Salaries, full ECPL expenses, and Jan–Mar purchase bills are not loaded yet. Printed ECPL sales are the sales source of truth when they differ from Tally.",
+  "coverage_note": "ECPL P&L workbook (1 Apr 25 – 28 Feb 26) is the main operating expense authority. Cleaned JSON lives under snapshots/. Regenerate ECPL Excel exports with: python scripts/export_ecpl_pl_workbook.py <path-to-xlsx>",
   "datasets": [
+    {
+      "id": "ecpl_pl_main",
+      "title": "ECPL P&L — main statement (cleaned)",
+      "description": "All line items from P&L_Apr To_Feb_26_ECPL. Total indirect expenses, salaries, petty cash, and net profit are here — use as primary ECPL expense for the period.",
+      "path": "snapshots/ecpl_fy2526/pl_main.json",
+      "format": "json",
+      "view": "ecpl_pl_table",
+      "source_note": "Regenerate from CA Excel"
+    },
+    {
+      "id": "ecpl_pl_monthly",
+      "title": "ECPL — monthly expense breakdown",
+      "description": "Rent, power, salary, petty, etc. by month (backing sheet for direct + some indirect lines).",
+      "path": "snapshots/ecpl_fy2526/monthly_expenses.json",
+      "format": "json",
+      "view": "ecpl_monthly",
+      "source_note": "Same workbook · Monthly Exp sheet"
+    },
+    {
+      "id": "ecpl_sales_register_summary",
+      "title": "ECPL — sales register totals",
+      "description": "Sums from Sales Register sheet; gross sales must match P&L gross sales line.",
+      "path": "snapshots/ecpl_fy2526/sales_register_summary.json",
+      "format": "json",
+      "view": "key_values",
+      "source_note": "Cross-check to pl_main Gross Sales"
+    },
+    {
+      "id": "ecpl_purchase_register_summary",
+      "title": "ECPL — purchase register reconciliation",
+      "description": "Explains PURCHASE ACCOUNT column vs Gross Total — ties P&L purchases to the correct column.",
+      "path": "snapshots/ecpl_fy2526/purchase_register_summary.json",
+      "format": "json",
+      "view": "key_values",
+      "source_note": "Do not sum Gross Total blindly"
+    },
+    {
+      "id": "ecpl_nakul_indirect",
+      "title": "ECPL — indirect expenses paid by Nakul (detail)",
+      "description": "Lines rolled into P&L indirect (Odoo, internet, Gmail, website).",
+      "path": "snapshots/ecpl_fy2526/nakul_indirect.json",
+      "format": "json",
+      "view": "nakul_lines",
+      "source_note": "Indirect exp_paid by Nakul M. sheet"
+    },
+    {
+      "id": "ecpl_sales_crosscheck_printed",
+      "title": "ECPL sales — printed invoices vs P&L period",
+      "description": "Compares P&L gross to printed invoice totals through 28-Feb-26 vs after (March).",
+      "path": "snapshots/ecpl_fy2526/sales_crosscheck_printed.json",
+      "format": "json",
+      "view": "key_values",
+      "source_note": "Requires local CSV path when regenerating export script"
+    },
+    {
+      "id": "ecpl_export_meta",
+      "title": "ECPL workbook — export metadata",
+      "description": "Source path, period label, authority note for ECPL expenses.",
+      "path": "snapshots/ecpl_fy2526/export_meta.json",
+      "format": "json",
+      "view": "key_values",
+      "source_note": "Small file"
+    },
+    {
+      "id": "bank_ecpl_harshad",
+      "title": "ECPL Axis — payments to Harshad / Nakul Me",
+      "description": "Cleaned debit lines from ECPL Axis FY 25–26 extract (rent rule per your policy).",
+      "path": "snapshots/bank/ecpl_axis_harshad_payments.json",
+      "format": "json",
+      "view": "bank_lines",
+      "source_note": "Manual snapshot — refresh when bank CSV updates"
+    },
+    {
+      "id": "bank_stpl_ecpl",
+      "title": "ECPL Axis — STPL (Sign Technic) credits",
+      "description": "Working-capital inflows; not net ‘payable’ without ledger agreement.",
+      "path": "snapshots/bank/stpl_credits_to_ecpl_axis.json",
+      "format": "json",
+      "view": "bank_lines",
+      "source_note": "Manual snapshot"
+    },
     {
       "id": "coverage-placeholder",
       "title": "Coverage checklist (sample)",
-      "description": "Example JSON shape for high-level status rows. Replace or extend when you publish real summaries.",
+      "description": "High-level status rows for other streams.",
       "path": "samples/coverage_placeholder.json",
       "format": "json",
-      "source_note": "Edit in repo; not generated from Excel"
+      "view": "plain_json",
+      "source_note": "Editable sample"
     },
     {
       "id": "csv-demo",
       "title": "CSV preview demo",
-      "description": "Simple comma-separated file to verify the table preview. Complex CSVs with quoted commas should be exported as JSON for reliable display.",
+      "description": "Comma-separated demo grid.",
       "path": "samples/demo_grid.csv",
       "format": "csv",
       "source_note": "Demo only"

@@ -9,9 +9,17 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:5173/**. The app has tabs: **Overview**, **Parties & sources**, **Questions & answers** (your reconciliation Q&A from static JSON), and **Data files** (manifest previews).
+Open **http://localhost:5173/**. Tabs: **Overview**, **ECPL P&L** (full cleaned statement + sibling workbook JSON), **Parties & sources**, **Questions** (each answer can **open reconciled snapshots** via buttons), **All data files** (every manifest entry with table/JSON views).
 
-Edit **`public/data/registry.json`** (parties + source streams) and **`public/data/reconciliation_questions.json`** (questions, figures, gaps, advice) to update what everyone sees — no code change required.
+### ECPL P&L → JSON (regenerate after Excel changes)
+
+```bash
+python scripts/export_ecpl_pl_workbook.py "C:\path\to\PL_Apr to Feb_26_ECPL.xlsx"
+```
+
+Outputs under **`public/data/snapshots/ecpl_fy2526/`**. The script can also refresh **printed-invoice cross-check** if the tagged CSV path in the script exists.
+
+Edit **`public/data/registry.json`** and **`public/data/reconciliation_questions.json`** (`evidence[]` links questions to **`manifest.json`** `id` values).
 
 Production build + local preview (serves the `dist/` folder):
 

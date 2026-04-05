@@ -1,0 +1,142 @@
+{
+  "source_file": "C:\\Users\\Nakul Mehta\\Downloads\\PL_Apr to Feb_26_ECPL.xlsx",
+  "reconciliation_display_source": "ECPL P&L workbook | PL_Apr to Feb_26_ECPL.xlsx",
+  "period_label": "1-Apr-2025 to 28-Feb-2026",
+  "authority_note": "ECPL operating expenses for this window are taken from this P&L (and backing sheets in the same workbook). Use this as the main expense total unless superseded by a signed statutory filing.",
+  "sheet": "Monthly Exp_ Apr To_Feb_26",
+  "rows": [
+    {
+      "expense_line": "Rent",
+      "type": "Direct Expenses",
+      "monthly_amounts_inr": [
+        100000.0,
+        100000.0,
+        100000.0,
+        100000.0,
+        100000.0,
+        100000.0,
+        100000.0,
+        135000.0,
+        135000.0,
+        100000.0,
+        100000.0,
+        1170000.0
+      ],
+      "row_total_inr": 1170000.0
+    },
+    {
+      "expense_line": "MSEDCL",
+      "type": "Direct Expenses",
+      "monthly_amounts_inr": [
+        42030.0,
+        28410.0,
+        103470.0,
+        48760.0,
+        38300.0,
+        176330.0,
+        73400.0,
+        59990.0,
+        50000.0,
+        40850.0,
+        41210.0,
+        702750.0
+      ],
+      "row_total_inr": 702750.0
+    },
+    {
+      "expense_line": "Salary",
+      "type": "Indirect Expenses",
+      "monthly_amounts_inr": [
+        832122.0,
+        736777.0,
+        917872.0,
+        1058713.0,
+        1042499.0,
+        949645.0,
+        1190392.0,
+        1003568.0,
+        735994.0,
+        549446.87,
+        624682.71,
+        9641711.579999998
+      ],
+      "row_total_inr": 9641711.579999998
+    },
+    {
+      "expense_line": "Food Exp",
+      "type": "Direct Expenses",
+      "monthly_amounts_inr": [
+        18276.0,
+        15450.0,
+        20363.0,
+        24522.0,
+        22348.0,
+        25000.0,
+        29647.0,
+        25738.0,
+        16100.0,
+        16000.0,
+        14293.0,
+        227737.0
+      ],
+      "row_total_inr": 227737.0
+    },
+    {
+      "expense_line": "Water Bill",
+      "type": "Direct Expenses",
+      "monthly_amounts_inr": [
+        9330.0,
+        8510.0,
+        8160.0,
+        8850.0,
+        9120.0,
+        10560.0,
+        12290.0,
+        8670.0,
+        6090.0,
+        4680.0,
+        4740.0,
+        91000.0
+      ],
+      "row_total_inr": 91000.0
+    },
+    {
+      "expense_line": "Petty cash expenses",
+      "type": "Indirect Expenses",
+      "monthly_amounts_inr": [
+        629026.0,
+        436714.0,
+        533405.7,
+        520706.0,
+        812747.89,
+        492527.42,
+        783141.0,
+        457435.25,
+        392677.05,
+        375943.0,
+        329283.19,
+        5763606.5
+      ],
+      "row_total_inr": 5763606.5
+    },
+    {
+      "expense_line": "MSEDCL F1",
+      "type": "F1",
+      "monthly_amounts_inr": [
+        2353.0,
+        33322.55,
+        10321.81,
+        125065.84,
+        265687.65,
+        158980.46,
+        33230.0,
+        33230.0,
+        null,
+        null,
+        null,
+        662191.31
+      ],
+      "row_total_inr": 662191.31
+    }
+  ]
+}

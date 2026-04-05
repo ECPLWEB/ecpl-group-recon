@@ -1,0 +1,14 @@
+{
+  "source_file": "C:\\Users\\Nakul Mehta\\Downloads\\PL_Apr to Feb_26_ECPL.xlsx",
+  "reconciliation_display_source": "ECPL P&L workbook | PL_Apr to Feb_26_ECPL.xlsx",
+  "period_label": "1-Apr-2025 to 28-Feb-2026",
+  "authority_note": "ECPL operating expenses for this window are taken from this P&L (and backing sheets in the same workbook). Use this as the main expense total unless superseded by a signed statutory filing.",
+  "sheet": "(external) printed invoices CSV",
+  "pl_gross_sales_inr": 47345661.07,
+  "pl_period_end": "2026-02-28",
+  "printed_invoices_all_inr": 50747854.99,
+  "printed_invoices_on_or_before_pl_end_inr": 47335042.07,
+  "printed_invoices_after_pl_end_inr": 3412812.92,
+  "invoice_count_after_pl_end": 16,
+  "delta_pl_minus_printed_through_period_inr": 10619.0
+}

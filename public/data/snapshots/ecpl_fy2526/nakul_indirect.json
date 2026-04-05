@@ -1,0 +1,51 @@
+{
+  "source_file": "C:\\Users\\Nakul Mehta\\Downloads\\PL_Apr to Feb_26_ECPL.xlsx",
+  "reconciliation_display_source": "ECPL P&L workbook | PL_Apr to Feb_26_ECPL.xlsx",
+  "period_label": "1-Apr-2025 to 28-Feb-2026",
+  "authority_note": "ECPL operating expenses for this window are taken from this P&L (and backing sheets in the same workbook). Use this as the main expense total unless superseded by a signed statutory filing.",
+  "sheet": "Indirect exp_paid by Nakul M.",
+  "lines": [
+    {
+      "particulars": "Odoo (Online bill)",
+      "type": "Indirect Expenses",
+      "amount_inr": 27000.0,
+      "period_note": "From Jan 25 to Dec 25"
+    },
+    {
+      "particulars": "(subtotal / continuation)",
+      "type": null,
+      "amount_inr": 1368.6666666666667,
+      "period_note": "From Nov 25 yearly plan"
+    },
+    {
+      "particulars": "(subtotal / continuation)",
+      "type": null,
+      "amount_inr": 28368.666666666668,
+      "period_note": null
+    },
+    {
+      "particulars": "Internet from Sandeep Internet Bhiwandi (No bill )",
+      "type": "Indirect Expenses",
+      "amount_inr": 48000.0,
+      "period_note": null
+    },
+    {
+      "particulars": "Gmail Workspace (Bill provided to Pramila)",
+      "type": "Indirect Expenses",
+      "amount_inr": 20172.0,
+      "period_note": null
+    },
+    {
+      "particulars": "Website development from Kodewise (No bill )",
+      "type": "Indirect Expenses",
+      "amount_inr": 36000.0,
+      "period_note": null
+    },
+    {
+      "particulars": "(subtotal / continuation)",
+      "type": null,
+      "amount_inr": 132540.6666666667,
+      "period_note": null
+    }
+  ]
+}
