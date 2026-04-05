@@ -9,7 +9,9 @@ npm install
 npm run dev
 ```
 
-Open **http://localhost:5173/** — click **Load preview** on a dataset.
+Open **http://localhost:5173/**. The app has tabs: **Overview**, **Parties & sources**, **Questions & answers** (your reconciliation Q&A from static JSON), and **Data files** (manifest previews).
+
+Edit **`public/data/registry.json`** (parties + source streams) and **`public/data/reconciliation_questions.json`** (questions, figures, gaps, advice) to update what everyone sees — no code change required.
 
 Production build + local preview (serves the `dist/` folder):
 

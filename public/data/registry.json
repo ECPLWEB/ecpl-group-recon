@@ -1,0 +1,149 @@
+{
+  "updated": "2026-04-05",
+  "introduction": "Each party below lists where its numbers should come from. Status reflects what is typically loaded into this repo today — update rows as you add snapshots under public/data/snapshots/.",
+  "parties": [
+    {
+      "id": "space_within",
+      "short_name": "Space Within",
+      "legal_name": "M/s. Space Within (proprietorship)",
+      "role": "Legacy shell: GSTIN, HDFC bank, Tally; winding down; GSTR-2B = inward (purchases).",
+      "sources": [
+        {
+          "id": "sw_hdfc",
+          "label": "HDFC bank statements (tagged master CSV)",
+          "typical_path": "ORIGINALS/Space Within Bank/Space_Within_HDFC_bank_master_tagged.csv",
+          "covers": "Rent to Harshad, advance tax payments, OD interest debits, STPL ↔ SW flows",
+          "status": "ready_off_repo",
+          "in_app_manifest": false
+        },
+        {
+          "id": "sw_gstr2b",
+          "label": "GSTR-2B master (all rows, tagged)",
+          "typical_path": "ORIGINALS/Space Within GST/GSTR2B_master_tagged_all_rows.csv",
+          "covers": "Inward supplies / ITC; not sales",
+          "status": "ready_off_repo",
+          "in_app_manifest": false
+        },
+        {
+          "id": "sw_tally",
+          "label": "Tally purchase & sales registers (tagged)",
+          "typical_path": "ORIGINALS/Space WIthin Tally Purchase and Sale/",
+          "covers": "Legacy books; overlap risk with ECPL era — use dates + tags",
+          "status": "ready_off_repo",
+          "in_app_manifest": false
+        }
+      ]
+    },
+    {
+      "id": "ecpl",
+      "short_name": "ECPL",
+      "legal_name": "Elating Crafts Private Limited",
+      "role": "Current company; printed sales = source of truth vs Tally when they differ.",
+      "sources": [
+        {
+          "id": "ecpl_printed_inv",
+          "label": "Printed sales invoices (consolidated, tagged)",
+          "typical_path": "Downloads/New folder/ecpl_invoices_consolidated_master_tagged.csv",
+          "covers": "Outward sales (authoritative total vs Tally)",
+          "status": "ready_off_repo",
+          "in_app_manifest": false
+        },
+        {
+          "id": "ecpl_tally",
+          "label": "Tally purchase & sales (tagged)",
+          "typical_path": "ORIGINALS/ECPL Tally Purchase and Sale/",
+          "covers": "Purchases through ~Feb 26 export; sales through Jan 26 export",
+          "status": "partial",
+          "in_app_manifest": false
+        },
+        {
+          "id": "ecpl_axis",
+          "label": "Axis current account (FY 25–26 from PDF → CSV)",
+          "typical_path": "ORIGINALS/ECPL Bank/ECPL_Axis_*_from_PDF.csv",
+          "covers": "ECPL receipts/payments incl. GST, NEFT to Harshad, STPL credits",
+          "status": "partial",
+          "in_app_manifest": false
+        }
+      ]
+    },
+    {
+      "id": "stpl",
+      "short_name": "STPL",
+      "legal_name": "Sign Technic Industries Pvt Ltd",
+      "role": "Lender / counterparty; NEFTs to ECPL and SW per bank narrations (no formal intercompany policy doc).",
+      "sources": [
+        {
+          "id": "stpl_via_ecpl_axis",
+          "label": "Inflows to ECPL tagged “SIGN TECHNIC” (ECPL Axis)",
+          "typical_path": "ECPL Axis CSV — filter particulars",
+          "covers": "STPL → ECPL cash movements",
+          "status": "derivable",
+          "in_app_manifest": false
+        },
+        {
+          "id": "stpl_via_sw_hdfc",
+          "label": "STPL ↔ Space Within (HDFC narrations)",
+          "typical_path": "Space Within HDFC master",
+          "covers": "Loans, returns, ECPL-tagged outflows from SW",
+          "status": "derivable",
+          "in_app_manifest": false
+        }
+      ]
+    },
+    {
+      "id": "nakul",
+      "short_name": "Nakul Mehta",
+      "legal_name": "Nakul Mehta (individual)",
+      "role": "Reimbursement / card / savings tagging for company-like spend.",
+      "sources": [
+        {
+          "id": "nakul_hdfc_wd",
+          "label": "HDFC savings withdrawals (tagged)",
+          "typical_path": "ORIGINALS/Nakul Bank and CC/Nakul_HDFC_withdrawals_company_tags.csv",
+          "covers": "Heuristic company tags",
+          "status": "ready_off_repo",
+          "in_app_manifest": false
+        },
+        {
+          "id": "nakul_cc",
+          "label": "HDFC credit card 6415 (statements, tagged)",
+          "typical_path": "ORIGINALS/Nakul Bank and CC/Nakul_CC_6415_all_statements_tagged.csv",
+          "covers": "FY 25–26 card classification",
+          "status": "ready_off_repo",
+          "in_app_manifest": false
+        }
+      ]
+    },
+    {
+      "id": "harshad",
+      "short_name": "Harshad Mehta",
+      "legal_name": "Nakul Harshad Mehta (counterparty — rent)",
+      "role": "Rent accrual 01-10-2024 to 31-03-2026 @ ₹1,00,000/month; any direct payment after 1 Oct 2024 = rent.",
+      "sources": [
+        {
+          "id": "harshad_ecpl_axis",
+          "label": "NEFT to NAKUL HARSHAD MEHTA (ECPL Axis)",
+          "typical_path": "ECPL Axis CSV",
+          "covers": "Part of rent paid from ECPL",
+          "status": "derivable",
+          "in_app_manifest": false
+        },
+        {
+          "id": "harshad_sw_hdfc",
+          "label": "Payments on Space Within HDFC (to be tagged)",
+          "typical_path": "Space Within HDFC master",
+          "covers": "Rent paid from SW",
+          "status": "needs_tagging",
+          "in_app_manifest": false
+        }
+      ]
+    }
+  ],
+  "reconciliation_principles": [
+    "Printed ECPL sales total overrides Tally sales when they differ.",
+    "GSTR-2B / 2A style data = inward (purchases), not outward sales.",
+    "For Oct 2024 – Mar 2026, treat Space Within OD interest charged by the bank as the amount to make good when allocating to ECPL (per your narrative).",
+    "Intercompany: no direct SW ↔ ECPL transfers in the model — only via banks and STPL as actually seen in statements.",
+    "Harshad income tax: 30% × Space Within profit — needs SW profit from books/CA; identify payments by challan/narration."
+  ]
+}

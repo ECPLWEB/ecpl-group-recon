@@ -1,0 +1,168 @@
+{
+  "updated": "2026-04-05",
+  "disclaimer": "Figures below are methodological summaries and placeholders until snapshot KPIs are wired in. They are not audited accounts. Replace “—” with numbers from your CSV exports or CA working.",
+  "questions": [
+    {
+      "id": "profit",
+      "title": "How much profit have we made so far?",
+      "status": "blocked",
+      "summary": "True profit needs a full P&L (CA / Tally P&L), not sales minus purchases alone. You are still adding ECPL salaries, complete expenses, and Jan–Mar purchase bills.",
+      "figures": [
+        {
+          "label": "Printed ECPL sales (authoritative)",
+          "value": "₹ 5,07,47,855 (approx.; from consolidated printed invoice CSV)",
+          "note": "Reconcile to bank receipts separately."
+        },
+        {
+          "label": "ECPL Tally purchases booked (incomplete period)",
+          "value": "₹ 2,56,67,157 gross (excl. grand total rows)",
+          "note": "Missing Jan–Mar bills you mentioned."
+        }
+      ],
+      "data_sources": ["ecpl_printed_inv", "ecpl_tally", "future_ca_pl"],
+      "gaps": ["CA P&L sheet", "Full ECPL expense ledger", "Complete purchase register"],
+      "advice": "Publish a single kpis.json (or add rows here) once CA P&L is available. Until then, show “gross margin on booked purchases” only as an indicator, never as statutory profit."
+    },
+    {
+      "id": "harshad_rent_accrual",
+      "title": "How much rent is owed to Harshad Mehta (accrual)?",
+      "status": "answered_partial",
+      "summary": "Accrual per your rule: ₹1,00,000 per month from 01-10-2024 through 31-03-2026 inclusive = 18 months → ₹18,00,000 (gross of tax unless you specify otherwise).",
+      "figures": [
+        {
+          "label": "Months in window",
+          "value": "18",
+          "note": "Oct 2024 through Mar 2026 inclusive."
+        },
+        {
+          "label": "Accrued rent @ ₹1L/month",
+          "value": "₹ 18,00,000",
+          "note": "Verify if any months are exempt or pro-rated."
+        }
+      ],
+      "data_sources": ["agreement_calendar"],
+      "gaps": ["Written confirmation if GST on rent is added on top"],
+      "advice": "Add a small rent_schedule.csv (month, accrued, paid_from_ecpl, paid_from_sw) and optionally let the app sum it."
+    },
+    {
+      "id": "harshad_paid",
+      "title": "How much have we paid Harshad so far (rent)?",
+      "status": "answered_partial",
+      "summary": "Your rule: any direct payment to Harshad after 1 Oct 2024 counts as rent. From ECPL Axis FY 25–26 extract, NEFT lines to NAKUL HARSHAD MEHTA total ₹2,46,500; plus review the ₹2,00,000 cash line naming NAKUL if that is the same payee.",
+      "figures": [
+        {
+          "label": "ECPL Axis — NEFT to NAKUL HARSHAD MEHTA (six lines)",
+          "value": "₹ 2,46,500",
+          "note": "Nov 2025 – Mar 2026 in the PDF-derived CSV."
+        },
+        {
+          "label": "ECPL Axis — cash withdrawal ‘NAKUL ME’",
+          "value": "₹ 2,00,000",
+          "note": "Classify as rent only if you confirm it went to Harshad."
+        },
+        {
+          "label": "Space Within — payments to Harshad",
+          "value": "—",
+          "note": "Sum from SW HDFC after you tag payee rows."
+        }
+      ],
+      "data_sources": ["harshad_ecpl_axis", "harshad_sw_hdfc"],
+      "gaps": ["Full ECPL bank for pre–Apr 2025 if any rent paid earlier", "Tagged SW outflows to Harshad"],
+      "advice": "Export a harshad_payments_all_sources.csv with columns: date, amount, bank_account, narration, source_file."
+    },
+    {
+      "id": "harshad_tax",
+      "title": "What advance / income tax was paid for Harshad Mehta?",
+      "status": "blocked",
+      "summary": "Formula you gave: 30% × Space Within profit. Until SW profit is fixed, the tax liability line stays open. Payments should be traced on Space Within HDFC (and any other bank used) by narration/challan.",
+      "figures": [
+        {
+          "label": "Computed tax (30% × SW profit)",
+          "value": "—",
+          "note": "Needs SW profit from books."
+        },
+        {
+          "label": "Payments identified as advance/self-assessment tax",
+          "value": "—",
+          "note": "Filter SW (and other) banks for ITNS/OLTAS/income tax narrations."
+        }
+      ],
+      "data_sources": ["sw_hdfc", "future_challans"],
+      "gaps": ["Space Within profit figure", "Challan PDFs or tagged payment export"],
+      "advice": "Do not confuse ECPL’s GST payments with Harshad’s personal income tax — keep separate tags in the ledger."
+    },
+    {
+      "id": "sw_od_interest",
+      "title": "How much OD interest did the bank charge (Space Within), and what is pending vs ECPL?",
+      "status": "answered_partial",
+      "summary": "Use actual interest debits on Space Within HDFC from 01-10-2024 to 31-03-2026. A quick pass on FY 25–26 SW data showed interest-related withdrawals on the order of ~₹1.2L+ (needs line-by-line confirmation). ECPL Axis FY 25–26 did not obviously label interest rows in the same way — OD cost sits primarily on SW statements per your setup.",
+      "figures": [
+        {
+          "label": "SW HDFC — interest-type debits (FY 25–26 sample pass)",
+          "value": "~₹ 1,21,802 (11 lines — verify each narration)",
+          "note": "Re-run after full tagging for Oct’24–Mar’26."
+        },
+        {
+          "label": "SW HDFC — line containing ‘OD’ (sample)",
+          "value": "₹ 1,27,382",
+          "note": "Confirm with bank certificate if needed."
+        },
+        {
+          "label": "Pending repayment to Space Within",
+          "value": "—",
+          "note": "Allocated portion agreed with stakeholders minus any amounts already reimbursed."
+        }
+      ],
+      "data_sources": ["sw_hdfc"],
+      "gaps": ["Apr–Sep 2024 interest if you extend window", "Agreement on principal vs interest split if repaying SW"],
+      "advice": "Export interest_charges_sw.csv (date, amount, narration, running OD balance if available). Treat as ‘amount to allocate’ until books post it."
+    },
+    {
+      "id": "ecpl_owes",
+      "title": "How much does ECPL owe Nakul and STPL?",
+      "status": "manual_review",
+      "summary": "Not a single bank filter: ‘owe’ needs opening balances + agreed character of STPL inflows (loan vs revenue) + Nakul reimbursements. STPL→ECPL credits on ECPL Axis alone were about ₹85.7L in one analytical pass — that is cash received, not automatically ‘debt’.",
+      "figures": [
+        {
+          "label": "STPL credits visible on ECPL Axis (indicative)",
+          "value": "₹ 85,75,200",
+          "note": "12 NEFT lines; narrations vary (advance, etc.)."
+        },
+        {
+          "label": "ECPL → Nakul / Harshad (direct)",
+          "value": "See rent / reimbursement ledgers",
+          "note": "Not the same as ‘owed to Nakul’."
+        }
+      ],
+      "data_sources": ["ecpl_axis", "ecpl_tally", "nakul_hdfc_wd", "nakul_cc"],
+      "gaps": ["Creditor ledger from Tally", "Written terms for STPL advances"],
+      "advice": "Build a simple intercompany_matrix.csv: date, from_party, to_party, amount, type (loan/sale/expense), evidence_file."
+    },
+    {
+      "id": "stpl_owes_ecpl",
+      "title": "How much does STPL owe ECPL?",
+      "status": "manual_review",
+      "summary": "Symmetric to the above: requires agreed treatment of trading balances vs loans. SW→STPL and ECPL→STPL debits exist in parallel; net position is not derivable from one statement.",
+      "figures": [],
+      "data_sources": ["stpl_via_ecpl_axis", "stpl_via_sw_hdfc", "ecpl_printed_inv"],
+      "gaps": ["Invoices issued to STPL vs payments", "Loan agreements / emails"],
+      "advice": "Start from **invoices + Tally receivable** for trade, and a separate **loan schedule** for STPL advances."
+    },
+    {
+      "id": "missing_data",
+      "title": "What data is still missing for a clean close?",
+      "status": "answered_partial",
+      "summary": "You already flagged: ECPL purchase bills Jan–Mar; complete ECPL expenses; salaries; CA P&L. Also: unified Harshad payment extract across ECPL + SW; challans for Harshad tax; full OD interest extract for full reconciliation window.",
+      "figures": [],
+      "data_sources": [],
+      "gaps": [],
+      "advice": "Use the Parties & sources tab as a checklist — flip each source to “in_manifest: true” when you copy a snapshot into public/data/ and add a manifest entry."
+    }
+  ],
+  "suggestions_next_steps": [
+    "Add public/data/snapshots/YYYY-MM-DD/kpis.json with machine-readable totals (sales, rent paid, interest, STPL flows) generated by your Python builders.",
+    "Keep raw PDF/XLS out of git; commit only CSV/JSON slices with reconciliation_display_source columns preserved.",
+    "When CA P&L arrives, add one dataset row and link it from the profit question.",
+    "For multi-party trust, version snapshots by date in the filename and repeat the same date in manifest.updated."
+  ]
+}

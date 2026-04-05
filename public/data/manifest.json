@@ -1,6 +1,6 @@
 {
   "updated": "2026-04-05",
-  "coverage_note": "Salaries, full ECPL expenses, and Jan–Mar purchase bills are not loaded yet. Printed ECPL sales are the sales source of truth when they differ from Tally.",
+  "coverage_note": "Dashboard tabs load registry.json + reconciliation_questions.json. Salaries, full ECPL expenses, and Jan–Mar purchase bills are not loaded yet. Printed ECPL sales are the sales source of truth when they differ from Tally.",
   "datasets": [
     {
       "id": "coverage-placeholder",
