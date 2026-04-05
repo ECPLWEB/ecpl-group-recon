@@ -476,8 +476,12 @@ function attachEvidencePanel(
       [ds ? `${ev.label}` : `${ev.label} (missing manifest id)`]
     );
     btn.addEventListener("click", async () => {
+      for (const b of bar.querySelectorAll("button.evidence-btn")) {
+        b.classList.remove("active");
+      }
       if (!ds) {
         host.style.display = "block";
+        openId = null;
         host.replaceChildren(
           el("p", { className: "error" }, [`Unknown dataset_id: ${ev.dataset_id}`])
         );
@@ -486,11 +490,7 @@ function attachEvidencePanel(
       if (openId === ev.dataset_id && host.style.display === "block") {
         host.style.display = "none";
         openId = null;
-        btn.classList.remove("active");
         return;
-      }
-      for (const b of bar.querySelectorAll("button.evidence-btn")) {
-        b.classList.remove("active");
       }
       btn.classList.add("active");
       openId = ev.dataset_id;
@@ -774,13 +774,12 @@ function renderEcplPlTab(plData: unknown, manifestById: Map<string, ManifestData
     if (!ds) continue;
     const btn = el("button", { type: "button", className: "evidence-btn" }, [ds.title]);
     btn.addEventListener("click", async () => {
+      for (const b of bar.querySelectorAll("button")) b.classList.remove("active");
       if (open === id && host.style.display === "block") {
         host.style.display = "none";
         open = null;
-        btn.classList.remove("active");
         return;
       }
-      for (const b of bar.querySelectorAll("button")) b.classList.remove("active");
       btn.classList.add("active");
       open = id;
       host.style.display = "block";
