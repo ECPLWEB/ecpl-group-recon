@@ -497,6 +497,16 @@ function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLEleme
       const cr = row.credit_inr;
       const narr =
         String(row.particulars ?? row.narration_hint ?? row.narration ?? "");
+      const bucket = row.payee_bucket;
+      const note = row.classification_note;
+      const detailParts: string[] = [];
+      if (typeof bucket === "string" && bucket.length) {
+        detailParts.push(`[${bucket}]`);
+      }
+      detailParts.push(narr);
+      if (typeof note === "string" && note.length) {
+        detailParts.push(`— ${note}`);
+      }
       tbody.appendChild(
         el("tr", {}, [
           el("td", {}, [String(row.txn_date ?? "—")]),
@@ -506,7 +516,7 @@ function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLEleme
           el("td", { className: "num" }, [
             typeof cr === "number" ? formatInr(cr) : "—",
           ]),
-          el("td", {}, [narr]),
+          el("td", {}, [detailParts.join(" ")]),
         ])
       );
     }
@@ -517,12 +527,36 @@ function renderJsonView(data: unknown, view: DatasetView | undefined): HTMLEleme
         el("p", { className: "meta-inline" }, [o.reconciliation_display_source])
       );
     }
+    if (Array.isArray(o.payee_policy) && o.payee_policy.length) {
+      const ul = el("ul", { className: "payee-policy muted small" });
+      for (const line of o.payee_policy as unknown[]) {
+        if (typeof line === "string" && line.length) {
+          ul.appendChild(el("li", {}, [line]));
+        }
+      }
+      wrap.appendChild(ul);
+    }
     wrap.appendChild(table);
-    if (o.sum_neft_harshad_inr != null) {
+    const rentSum =
+      o.sum_rent_paid_to_harshad_inr ??
+      o.sum_neft_harshad_inr ??
+      o.legacy_sum_neft_harshad_inr;
+    if (rentSum != null && typeof rentSum === "number") {
       wrap.appendChild(
         el("p", { className: "kv-line" }, [
-          el("strong", {}, ["Sum NEFT (Harshad): "]),
-          formatInr(Number(o.sum_neft_harshad_inr)),
+          el("strong", {}, ["Rent paid to Harshad (roll-up): "]),
+          formatInr(Number(rentSum)),
+        ])
+      );
+    }
+    if (
+      o.sum_nakul_reimbursement_candidates_inr != null &&
+      typeof o.sum_nakul_reimbursement_candidates_inr === "number"
+    ) {
+      wrap.appendChild(
+        el("p", { className: "kv-line muted" }, [
+          el("strong", {}, ["Nakul reimbursement candidates (not rent): "]),
+          formatInr(Number(o.sum_nakul_reimbursement_candidates_inr)),
         ])
       );
     }

@@ -52,8 +52,12 @@
         }
       ],
       "data_sources": ["ecpl_pl_main", "ecpl_pl_monthly"],
-      "gaps": ["Map P&L rent payee to Harshad vs other", "Space Within rent payments"],
-      "advice": "If Harshad rent is split across ECPL + SW, build one rent_ledger.csv covering both banks.",
+      "gaps": [
+        "Map P&L rent payee to Harshad vs other landlords",
+        "Space Within rent payments (Harshad beneficiary only)",
+        "Exclude Nakul-only beneficiary lines from rent roll-up"
+      ],
+      "advice": "If Harshad rent is split across ECPL + SW, build one rent_ledger.csv with payee = Harshad only; keep Nakul reimbursement in a separate file.",
       "evidence": [
         { "dataset_id": "ecpl_pl_main", "label": "P&L rent + expense totals" },
         { "dataset_id": "ecpl_pl_monthly", "label": "Monthly rent schedule" }
@@ -63,23 +67,26 @@
       "id": "harshad_paid",
       "title": "How much have we paid Harshad so far (rent)?",
       "status": "answered_partial",
-      "summary": "ECPL Axis snapshot: ₹2,46,500 NEFT to NAKUL HARSHAD MEHTA; optional ₹2,00,000 cash ‘NAKUL ME’ if you count it as rent. Space Within payments require a separate tagged export.",
+      "summary": "Policy: company rent is paid only to Harshad Mehta. ECPL Axis snapshot shows ₹2,46,500 NEFT where beneficiary is NAKUL HARSHAD MEHTA (counts as rent paid). ₹2,00,000 cash ‘NAKUL ME’ is not rent — reconcile to Nakul’s expense proofs. Space Within HDFC needs the same Harshad vs Nakul split.",
       "figures": [
         {
-          "label": "NEFT to NAKUL HARSHAD MEHTA",
+          "label": "Rent — NEFT to NAKUL HARSHAD MEHTA",
           "value": "₹ 2,46,500",
-          "note": "Six lines in ECPL Axis extract."
+          "note": "Six lines; beneficiary is Harshad."
         },
         {
-          "label": "Cash WDL NAKUL ME",
+          "label": "Reimbursement candidate — cash WDL NAKUL ME",
           "value": "₹ 2,00,000",
-          "note": "Confirm payee."
+          "note": "Not rent; match to Nakul expenses / vouchers."
         }
       ],
       "data_sources": ["bank_ecpl_harshad"],
-      "gaps": ["Space Within HDFC tagged to Harshad"],
+      "gaps": [
+        "Space Within HDFC: tag rent only where payee is Harshad",
+        "Reimbursement ledger: ECPL→Nakul lines vs ecpl_nakul_indirect + CC/savings tags"
+      ],
       "advice": "Refresh bank JSON whenever you re-parse the Axis PDF/CSV.",
-      "evidence": [{ "dataset_id": "bank_ecpl_harshad", "label": "ECPL Axis debit lines" }]
+      "evidence": [{ "dataset_id": "bank_ecpl_harshad", "label": "ECPL Axis — Harshad rent vs Nakul reimbursement" }]
     },
     {
       "id": "harshad_tax",
@@ -121,7 +128,7 @@
       "id": "ecpl_owes",
       "title": "How much does ECPL owe Nakul and STPL?",
       "status": "manual_review",
-      "summary": "STPL→ECPL bank credits (indicative ₹85.75L) and ECPL→Harshad/Nakul debits are evidence only — not closing balances without ledgers.",
+      "summary": "STPL→ECPL bank credits (indicative ₹85.75L) and ECPL Axis outflows are evidence only — not closing balances without ledgers. Split Axis outflows: rent (Harshad beneficiary) vs reimbursement (Nakul beneficiary only).",
       "figures": [
         {
           "label": "STPL credits (ECPL Axis)",
@@ -134,7 +141,7 @@
       "advice": "Use intercompany_matrix.csv in addition to bank JSON.",
       "evidence": [
         { "dataset_id": "bank_stpl_ecpl", "label": "STPL credits to ECPL" },
-        { "dataset_id": "bank_ecpl_harshad", "label": "Direct payments to Harshad / Nakul ME" },
+        { "dataset_id": "bank_ecpl_harshad", "label": "ECPL Axis: Harshad (rent) vs Nakul (reimbursement)" },
         { "dataset_id": "ecpl_pl_main", "label": "P&L context (expense + profit)" }
       ]
     },

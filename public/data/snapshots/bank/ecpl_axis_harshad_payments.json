@@ -1,16 +1,70 @@
 {
-  "reconciliation_display_source": "ECPL Axis CA | PDF statement FY 25-26 → CSV | filter NAKUL HARSHAD MEHTA / NAKUL ME",
-  "period_note": "FY 25-26 statement only in snapshot; rent rule: direct payments to Harshad after 1 Oct 2024 count as rent.",
-  "lines": [
-    { "txn_date": "26/09/2025", "particulars": "SAK/CASH WDL/.../NAKUL ME", "debit_inr": 200000, "credit_inr": 0, "classification_note": "Cash — confirm if payee is Harshad for rent" },
-    { "txn_date": "23/11/2025", "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC", "debit_inr": 50000, "credit_inr": 0 },
-    { "txn_date": "20/12/2025", "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC", "debit_inr": 25000, "credit_inr": 0 },
-    { "txn_date": "24/01/2026", "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC", "debit_inr": 36500, "credit_inr": 0 },
-    { "txn_date": "24/01/2026", "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC", "debit_inr": 50000, "credit_inr": 0 },
-    { "txn_date": "19/02/2026", "particulars": "INB/NEFT/.../NAKUL HARSHAD MEHTA/HDFC", "debit_inr": 65000, "credit_inr": 0 },
-    { "txn_date": "21/03/2026", "particulars": "INB/NEFT/.../NAKUL HARSHAD MEHTA/HDFC", "debit_inr": 20000, "credit_inr": 0 }
+  "reconciliation_display_source": "ECPL Axis CA | PDF statement FY 25-26 → CSV | classified by payee policy below",
+  "payee_policy": [
+    "Company rent is paid only directly to Harshad Mehta. Do not book or reconcile rent against payments made only to Nakul Mehta.",
+    "Payments to Nakul Mehta (when beneficiary is Nakul, not Harshad) are reimbursements — reconcile each to expenses incurred by Nakul (company expense register, tagged CC/savings, petty, invoices)."
   ],
-  "sum_neft_harshad_inr": 246500,
-  "sum_including_cash_nakul_me_inr": 446500,
-  "gap_note": "Space Within HDFC payments to Harshad not in this file — add separate export when tagged."
+  "period_note": "FY 25-26 statement slice in this snapshot. Rent accrual vs paid: use Harshad-only bank lines + SW/ECPL as applicable.",
+  "lines": [
+    {
+      "txn_date": "26/09/2025",
+      "particulars": "SAK/CASH WDL/.../NAKUL ME",
+      "debit_inr": 200000,
+      "credit_inr": 0,
+      "payee_bucket": "nakul_reimbursement",
+      "classification_note": "NOT rent — reconcile to Nakul’s expense proofs (not Harshad rent)."
+    },
+    {
+      "txn_date": "23/11/2025",
+      "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC",
+      "debit_inr": 50000,
+      "credit_inr": 0,
+      "payee_bucket": "harshad_rent",
+      "classification_note": "Beneficiary is Harshad — counts toward rent paid (policy)."
+    },
+    {
+      "txn_date": "20/12/2025",
+      "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC",
+      "debit_inr": 25000,
+      "credit_inr": 0,
+      "payee_bucket": "harshad_rent",
+      "classification_note": "Rent to Harshad."
+    },
+    {
+      "txn_date": "24/01/2026",
+      "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC",
+      "debit_inr": 36500,
+      "credit_inr": 0,
+      "payee_bucket": "harshad_rent",
+      "classification_note": "Rent to Harshad."
+    },
+    {
+      "txn_date": "24/01/2026",
+      "particulars": "NEFT/.../NAKUL HARSHAD MEHTA/HDFC",
+      "debit_inr": 50000,
+      "credit_inr": 0,
+      "payee_bucket": "harshad_rent",
+      "classification_note": "Rent to Harshad."
+    },
+    {
+      "txn_date": "19/02/2026",
+      "particulars": "INB/NEFT/.../NAKUL HARSHAD MEHTA/HDFC",
+      "debit_inr": 65000,
+      "credit_inr": 0,
+      "payee_bucket": "harshad_rent",
+      "classification_note": "Rent to Harshad."
+    },
+    {
+      "txn_date": "21/03/2026",
+      "particulars": "INB/NEFT/.../NAKUL HARSHAD MEHTA/HDFC",
+      "debit_inr": 20000,
+      "credit_inr": 0,
+      "payee_bucket": "harshad_rent",
+      "classification_note": "Rent to Harshad."
+    }
+  ],
+  "sum_rent_paid_to_harshad_inr": 246500,
+  "sum_nakul_reimbursement_candidates_inr": 200000,
+  "legacy_sum_neft_harshad_inr": 246500,
+  "gap_note": "Space Within HDFC: tag Harshad-only lines for rent; Nakul-only lines for reimbursement. Add separate JSON when exported."
 }

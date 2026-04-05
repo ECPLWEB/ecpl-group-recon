@@ -60,7 +60,7 @@
           "id": "ecpl_axis",
           "label": "Axis current account (FY 25–26 from PDF → CSV)",
           "typical_path": "ORIGINALS/ECPL Bank/ECPL_Axis_*_from_PDF.csv",
-          "covers": "ECPL receipts/payments incl. GST, NEFT to Harshad, STPL credits",
+          "covers": "ECPL receipts/payments incl. GST; NEFT to Harshad (rent); Nakul-only outflows (reimbursement); STPL credits",
           "status": "partial",
           "in_app_manifest": false
         }
@@ -118,7 +118,7 @@
       "id": "harshad",
       "short_name": "Harshad Mehta",
       "legal_name": "Nakul Harshad Mehta (counterparty — rent)",
-      "role": "Rent accrual 01-10-2024 to 31-03-2026 @ ₹1,00,000/month; any direct payment after 1 Oct 2024 = rent.",
+      "role": "Rent accrual 01-10-2024 to 31-03-2026 @ ₹1,00,000/month; rent is paid only to Harshad — payments to Nakul alone are not rent.",
       "sources": [
         {
           "id": "harshad_ecpl_axis",
@@ -140,6 +140,7 @@
     }
   ],
   "reconciliation_principles": [
+    "Rent: book and reconcile rent only against payments made directly to Harshad Mehta. Payments made only to Nakul Mehta are reimbursements — reconcile each to Nakul’s expense evidence, not the rent line.",
     "ECPL operating expenses for 1 Apr 2025 – 28 Feb 2026: use the CA P&L workbook (cleaned JSON: ecpl_pl_main) as the main expense and profit picture unless superseded by statutory filings.",
     "Printed ECPL sales total overrides Tally sales when they differ.",
     "GSTR-2B / 2A style data = inward (purchases), not outward sales.",

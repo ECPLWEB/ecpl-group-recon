@@ -3,6 +3,8 @@
   "title": "Data coverage, six expense lines, and bank tie-up — checklist",
   "disclaimer": "This is a working checklist for collection and reconciliation. It does not replace audit. Bank ↔ ledger matching is not auto-run in this app until you supply tagged exports.",
   "understood_rules": [
+    "Rent: company rent is paid only directly to Harshad Mehta — never treat payments made only to Nakul Mehta as rent.",
+    "Nakul Mehta: payments to Nakul are reimbursements — each must reconcile to expenses Nakul incurred (ledgers, tagged bank/CC, vouchers), not to the rent line.",
     "Space Within P&L workbook is FY 2024-25 framing; your reconciliation start date is 15-Sep-2024 (workbook main sheet is Oct'24–Mar'25 — align or restate opening balances for 15-Sep–30-Sep).",
     "SW books carry expenses only through 30-Jun-2025; after that expenses are on ECPL, not SW.",
     "ECPL P&L (1-Apr-2025 to 28-Feb-2026) remains the main authority for ECPL operating expenses in that window.",
@@ -35,8 +37,9 @@
         "SW P&L + Revised summary (conflicting rent — see flag)"
       ],
       "data_missing": [
-        "Bank debits tagged ‘rent / landlord / Harshad’ for SW + ECPL for full period",
-        "Written lease map: which entity paid which months"
+        "Bank debits where beneficiary is Harshad Mehta only (rent) — SW HDFC + ECPL Axis + any other account",
+        "Exclude Nakul Mehta beneficiary lines from rent roll-up; map those to reimbursement schedule",
+        "Written lease map: which entity (SW vs ECPL) paid which months to Harshad"
       ]
     },
     {
@@ -120,6 +123,17 @@
     "ECPL Axis slices: Harshad/Nakul payments, STPL credits (JSON under snapshots/bank/)",
     "This checklist (reconciliation_gaps.json)"
   ],
+  "nakul_reimbursement_track": {
+    "rule": "All payments to Nakul Mehta (not Harshad) = reimbursement; match to expense evidence.",
+    "data_we_have": [
+      "ECPL P&L indirect lines paid by Nakul (Odoo, internet, etc.) in workbook export",
+      "Nakul HDFC CC / savings tagged CSVs (under Downloads/ORIGINALS — not all copied into app)"
+    ],
+    "data_missing": [
+      "Single reimbursement_ledger: date, bank_ref, amount_to_nakul, linked_expense_voucher_ids",
+      "ECPL Axis + SW HDFC exports with payee tag Nakul vs Harshad vs vendor"
+    ]
+  },
   "what_is_missing_for_full_bank_tie": [
     "Space Within HDFC: export JSON snapshot into public/data/snapshots/bank/ with narration tags for Rent, Torrent, Salary, Food, Water, Petty, Tax, STPL, ECPL",
     "ECPL Axis: same six-line tags for Apr'25 onwards",
@@ -131,7 +145,7 @@
     "status": "NOT_COMPUTED_IN_APP",
     "explanation": "The app does not yet run row-level bank ↔ ledger matching. Provide: (1) bank CSV with stable narration, (2) payment register or Tally export with voucher numbers, (3) optional match file: bank_ref,amount,date,voucher_no,status.",
     "known_slices_in_app": [
-      "ECPL → Harshad / Nakul ME (Axis) — see bank/ecpl_axis_harshad_payments.json",
+      "ECPL Axis — rent (beneficiary Harshad) vs reimbursement (beneficiary Nakul only) — see bank/ecpl_axis_harshad_payments.json",
       "STPL → ECPL credits — see bank/stpl_credits_to_ecpl_axis.json"
     ]
   },

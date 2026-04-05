@@ -67,8 +67,8 @@
     },
     {
       "id": "bank_ecpl_harshad",
-      "title": "ECPL Axis — payments to Harshad / Nakul Me",
-      "description": "Cleaned debit lines from ECPL Axis FY 25–26 extract (rent rule per your policy).",
+      "title": "ECPL Axis — Harshad (rent) vs Nakul (reimbursement)",
+      "description": "Debit lines from ECPL Axis FY 25–26 extract: rent roll-up uses Harshad beneficiary only; Nakul-only lines are reimbursement candidates, not rent.",
       "path": "snapshots/bank/ecpl_axis_harshad_payments.json",
       "format": "json",
       "view": "bank_lines",
